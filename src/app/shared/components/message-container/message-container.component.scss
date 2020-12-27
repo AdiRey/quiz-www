@@ -1,0 +1,17 @@
+.component {
+  padding: 50px;
+  font-size: 1.1rem;
+  font-family: "Lato", sans-serif;
+  color: white;
+  background-color: #3a78a5;
+  line-height: 1.5rem;
+  text-align: justify;
+  &__p {
+    word-wrap: break-word;
+    font-family: inherit;
+  }
+  &__h1 {
+    font-style: italic;
+    font-family: inherit;
+  }
+}

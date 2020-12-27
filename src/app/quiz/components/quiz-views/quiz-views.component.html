@@ -1,0 +1,18 @@
+<section class="header">
+    Akcje:
+    <button type="button" mat-raised-button (click)="addQuiz()">
+        dodaj quiz
+    </button>
+</section>
+<section *ngFor="let category of categoryList; let i = index" class="category">
+    <h2 class="category__h2">{{ category.name }}</h2>
+    <swiper [slidesPerView]="5" [spaceBetween]="5" [virtual]="true" [pagination]="pagination" [speed]="700" [navigation]="navigation" [slidesPerGroup]="5">
+        <ng-container *ngFor="let element of category.content; let j = index">
+            <ng-template swiperSlide>
+                <h5>{{ element.title }}</h5>
+                <span>img: {{ element.img }}</span>
+                <span>{{ element.description }}</span>
+            </ng-template>
+        </ng-container>
+    </swiper>
+</section>

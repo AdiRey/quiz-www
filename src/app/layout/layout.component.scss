@@ -1,0 +1,85 @@
+:host ::ng-deep {
+  .mat-menu-panel {
+    max-width: none !important;
+    width: 142.188px !important;
+  }
+}
+
+.navbar {
+  height: 50px;
+  background: linear-gradient(to left, rgba(74, 78, 81, 0.8), #4a4e51);
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  color: #d1d1d1;
+  font-size: 1.1rem;
+  &__button {
+    border-radius: 0;
+    padding: 0;
+    outline: none;
+    background-color: #4a4e51;
+  }
+  &__mat-button {
+    margin-left: auto;
+    &:focus {
+      outline: none;
+    }
+  }
+  &__menu {
+    &--item {
+      width: 142.188px !important;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+.fa-bars {
+  padding: 10.2px 12.2px;
+  font-size: 30px;
+}
+
+.main-window {
+  height: calc(100vh - 50px);
+  background-color: grey;
+  mat-sidenav-container {
+    background-color: white;
+    height: 100%;
+    mat-sidenav,
+    mat-sidenav-content {
+      min-width: 150px;
+    }
+    mat-sidenav {
+      box-shadow: 5px 0px 10px 1px rgba(0, 0, 0, 0.5);
+      .sidenav-list {
+        padding-top: 20px;
+        &__li {
+          cursor: pointer;
+          display: flex;
+          transition: background-color 0.2s;
+          a {
+            text-decoration: none;
+            color: white;
+            text-transform: uppercase;
+            font-family: "Lato", sans-serif;
+            width: 100%;
+            height: 100%;
+            padding: 10px 20px;
+          }
+          &:hover {
+            background-color: darkgrey;
+          }
+        }
+      }
+    }
+    .mat-sidenav-content {
+      background-color: rgb(169, 173, 176) !important;
+      color: black;
+      // padding: 50px 25px;
+    }
+  }
+}

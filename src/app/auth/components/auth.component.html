@@ -1,0 +1,31 @@
+<section class="img-container">
+    <nav class="img-container__nav">
+        <div class="img-container__nav--image">
+            <app-logo></app-logo>
+        </div>
+        <div class="img-container__nav--options">
+            <div>
+                Język
+            </div>
+            <button type="button" mat-raised-button color="primary" (click)="loginRoute()" [disabled]="!_url">
+                Zaloguj
+            </button>
+        </div>
+    </nav>
+    <section class="img-container__section">
+        <div class="d-flex flex-column align-items-center justify-content-around">
+            <h1 class="img-container__section--h1">quiz pro</h1>
+            <span class="img-container__section--span">Przetestuj swoje możliwości</span>
+        </div>
+    </section>
+    <footer class="img-container__footer container-fluid d-flex flex-column justify-content-around">
+        <div class="w-100 m-0 p-0 d-flex justify-content-between">
+          <div class="m-0 p-0 d-flex justify-content-around">
+            <span (click)="openDialog('statue')">Regulamin</span>
+            <span (click)="openDialog('privacyPolicy')">Polityka prywatnośći</span>
+            <span (click)="openDialog('cookiesPolicy')">Polityka plików cookies</span>
+          </div>
+          <span class="text-white">&copy; Adrian Kowal & Mateusz Kolak</span>
+        </div>
+    </footer>
+</section>

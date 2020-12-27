@@ -1,0 +1,4 @@
+<section class="component" *ngIf="(data$ | async) as data">
+    <h1 class="component__h1">{{ data[matDialog.contentType]['title'] }}</h1>
+    <p class="component__p">{{ data[matDialog.contentType]['description'] }}</p>
+</section>
