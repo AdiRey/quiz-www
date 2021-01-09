@@ -1,1 +1,6 @@
-<p>loader works!</p>
+<section class="loader">
+    <div *ngIf="loading" class="loader__spinner">
+        <mat-spinner color="accent"></mat-spinner>
+    </div>
+    <ng-content></ng-content>
+</section>

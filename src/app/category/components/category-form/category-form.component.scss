@@ -2,24 +2,11 @@
   display: block;
 }
 .form {
-  // padding: 50px;
-  // padding-top: 150px;
-  position: relative;
   &__content-section {
     mat-form-field {
       width: 400px;
     }
     padding-bottom: 100px;
-  }
-  &__button-section {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px;
   }
 }
 .form-center {

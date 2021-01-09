@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
-import { AppState } from 'src/app/shared/store/app-state';
+import { AppState } from '@shared/store/app-state';
 import { selectLoading } from '../../store';
 import * as AuthActions from '../../store/auth.actions';
 

@@ -1,1 +1,13 @@
-<p>confirm-entry works!</p>
+<app-loader [loading]="loading$ | async">
+    <section class="confirm-content">
+        <h1 class="confirm-content__h1">
+            {{ data.message }}
+        </h1>
+        <section class="confirm-content__button-section">
+            <button mat-raised-button (click)="clickAction('cancel')">Anuluj</button>
+            <button mat-raised-button color="accent" (click)="clickAction('confirm')">
+                Potwierdź
+            </button>
+        </section>
+    </section>
+</app-loader>

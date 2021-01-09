@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { QuizModel } from "src/app/shared/model/quiz.model";
+import { QuizModel } from "@shared/model/quiz.model";
 
 
 export const LOAD_ALL_QUIZES = createAction('[quiz] LOAD_ALL_QUIZES');

@@ -1,4 +1,4 @@
-import { CategoryUpdateModel } from "src/app/shared/model/category.model";
+import { CategoryUpdateModel } from "@shared/model/category.model";
 
 
 export interface CategoryState {

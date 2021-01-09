@@ -1,4 +1,4 @@
-import { UserModel } from "src/app/shared/model/auth.model";
+import { UserModel } from "@shared/model/auth.model";
 
 export interface AuthState {
     url: string;

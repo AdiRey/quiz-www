@@ -14,32 +14,35 @@
     </mat-menu>
 </nav>
 <main class="main-window">
-    <mat-sidenav-container>
-        <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-          <ul class="sidenav-list">
-              <li *ngFor="let item of items" class="sidenav-list__li">
-                  <a [routerLink]="item.route" [routerLinkActive]="['active']">
-                    <mat-icon>{{ item.icon }}</mat-icon>
-                    <span>{{ item.content }}</span>
-                  </a>
-              </li>
-          </ul>
-        </mat-sidenav>
-      
-        <mat-sidenav-content>
-          <section class="breadrumbs">
-            <span>
-              <mat-icon>category</mat-icon>
-              Kategorie
-            </span>
-            <div>
-              <button mat-raised-button color="accent" (click)="buttonClick()">
-                <mat-icon>add</mat-icon>
-                Dodaj kategorię
-              </button>
-            </div>
-          </section>
-          <router-outlet></router-outlet>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+      <ul class="sidenav-list">
+        <li *ngFor="let item of items" class="sidenav-list__li">
+          <a [routerLink]="item.route" [routerLinkActive]="['active']">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span>{{ item.content }}</span>
+          </a>
+        </li>
+      </ul>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <section class="breadrumbs">
+        <span>
+          <mat-icon>category</mat-icon>
+          Kategorie
+        </span>
+        <div>
+          <button mat-raised-button color="accent" (click)="buttonClick()">
+            <mat-icon>add</mat-icon>
+            Dodaj kategorię
+          </button>
+        </div>
+      </section>
+      <router-outlet></router-outlet>
+      <footer class="footer">
+        <span> Footer </span>
+        <span>&copy; Adrian Kowal & Mateusz Kolak</span>
+      </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </main>

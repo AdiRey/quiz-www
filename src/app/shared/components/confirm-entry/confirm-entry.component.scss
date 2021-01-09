@@ -1,0 +1,13 @@
+.confirm-content {
+  height: 220px;
+  width: 600px;
+  padding: 30px;
+  &__button-section {
+    padding-top: 70px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+button {
+  outline: none;
+}

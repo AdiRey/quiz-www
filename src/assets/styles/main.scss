@@ -24,6 +24,11 @@
   font-style: normal;
 }
 
+html,
+body {
+  min-height: 100%;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -60,4 +65,18 @@ mat-dialog-container {
 .table-wrapper {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.012), 0 2px 7px rgba(0, 0, 0, 0.024),
     0 4px 10px rgba(0, 0, 0, 0.54);
+}
+
+.form {
+  position: relative;
+  &__button-section {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+  }
 }

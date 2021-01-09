@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { MessageContainerComponent } from 'src/app/shared/components/message-container/message-container.component';
-import { AppState } from 'src/app/shared/store/app-state';
+import { MessageContainerComponent } from '@shared/components/message-container/message-container.component';
+import { AppState } from '@shared/store/app-state';
 import { selectLoading, selectUrl } from '../../store';
 import * as AuthActions from '../../store/auth.actions';
 

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Store } from '@ngrx/store';
-import { QuizMapperSerivce } from 'src/app/shared/service/quiz-mapper.service';
-import { AppState } from 'src/app/shared/store/app-state';
+import { QuizMapperSerivce } from '@shared/service/quiz-mapper.service';
+import { AppState } from '@shared/store/app-state';
 import * as QuizActions from '../../store/quiz.actions';
 import { QuizModel } from '../../../shared/model/quiz.model';
 

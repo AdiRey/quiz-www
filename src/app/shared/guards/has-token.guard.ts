@@ -13,11 +13,11 @@ export class HasTokenGuard implements CanActivate {
 
   canActivate() {
     const token = LocalStorage.getToken();
-    // if (!!token && this._jwtSerivce.isTokenExpired(token)) {
-    //   this._router.navigate(['/auth']);
-    //   LocalStorage.clearAuth();
-    //   return false;
-    // }
+    if (!!token && this._jwtSerivce.isTokenExpired(token)) {
+      this._router.navigate(['/auth']);
+      LocalStorage.clearAuth();
+      return false;
+    }
     return true;
   }
   

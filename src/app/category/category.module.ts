@@ -16,6 +16,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { categoryReducer } from './store/category.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CategoryEffect } from './store/category.effects';
 
 
 @NgModule({
@@ -34,7 +38,9 @@ import { SharedModule } from '../shared/shared.module';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature('category', categoryReducer),
+    EffectsModule.forFeature([CategoryEffect])
   ],
   entryComponents: [
     CategoryFormComponent

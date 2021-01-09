@@ -2,12 +2,15 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CategoryRestApiService } from 'src/app/shared/api-service/category/category.service';
-import { ConfirmEntryComponent } from 'src/app/shared/components/confirm-entry/confirm-entry.component';
-import { CategoryModel } from 'src/app/shared/model/category.model';
-import { QuizDataSource } from 'src/app/shared/quiz-table.datasource';
+import { CategoryRestApiService } from '@shared/api-service/category/category.service';
+import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
+import { CategoryEditModel, CategoryModel } from '@shared/model/category.model';
+import { QuizDataSource } from '@shared/quiz-table.datasource';
 import { CategoryFormComponent } from '../category-form/category-form.component';
 import * as CategoryActions from '../../store/category.actions';
+import { ConfirmModel } from '@shared/model/components/confirm-entry.model';
+import { IdModel } from '@shared/model/components/id.model';
+import { selectLoading } from '../../store/category.selector';
 
 @Component({
   selector: 'app-category-table',
@@ -38,32 +41,33 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
   }
   
   public openCreateDialog() {
-    this._matDialog.open(CategoryFormComponent, {
+    this._matDialog.open<CategoryFormComponent, CategoryEditModel>(CategoryFormComponent, {
       minHeight: '500px',
-      minWidth: '700px'
+      minWidth: '700px',
+      data: {
+        isEdit: false
+      }
     });
   }
 
-  public edit(element: any) {
-    this._matDialog.open(CategoryFormComponent, {
+  public edit(element: CategoryModel) {
+    this._matDialog.open<CategoryFormComponent, CategoryEditModel>(CategoryFormComponent, {
       minWidth: '700px',
-      data: element
-    })
-  }
-
-  public delete(element: any) {
-    this._matDialog.open(ConfirmEntryComponent,{
-      minWidth: '700px',
-      minHeight: '500px',
       data: {
-        message: 'Czy na pewno chcesz usunąć tą kategorię?',
-        element: element,
-        key: 'delete',
-        actions: {
-          delete: CategoryActions.DELETE_CATEGORY
-        }
+        isEdit: true,
+        content: element
       }
     })
   }
 
+  public delete(element: CategoryModel) {
+    this._matDialog.open<ConfirmEntryComponent, ConfirmModel<any, IdModel>>(ConfirmEntryComponent,{
+      data: {
+        message: 'Czy na pewno chcesz usunąć tą kategorię?',
+        element: element,
+        action: CategoryActions.DELETE_CATEGORY,
+        loadingSelector: selectLoading
+      }
+    })
+  }
 }

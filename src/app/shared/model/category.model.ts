@@ -6,10 +6,20 @@ export interface CategoryModel {
     quizesCount: number;
 }
 
+export interface CategoryEditModel {
+    isEdit: boolean;
+    content?: CategoryModel;
+}
+
+
+// REST API
 export interface CategoryCreateModel {
     name: string;
 }
 
 export interface CategoryUpdateModel {
-    name: string;
+    id: number | string;
+    body: {
+        name: string;
+    }
 }

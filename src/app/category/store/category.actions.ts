@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { CategoryCreateModel, CategoryUpdateModel } from "src/app/shared/model/category.model";
+import { CategoryCreateModel, CategoryUpdateModel } from "@shared/model/category.model";
 
 
 export const ADD_CATEGORY = createAction('[category] ADD_CATEGORY', props<CategoryCreateModel>());
@@ -13,3 +13,5 @@ export const DELETE_CATEGORY = createAction('[category] DELETE_CATEGORY', props<
 export const DELETE_CATEGORY_SUCCESS = createAction('[category] DELETE_CATEGORY_SUCCESS');
 
 export const DISCARD_LOADING = createAction('[category] DISCARD_LOADING');
+
+export const CLOSE_ALL_DIALOGS = createAction('[category] CLOSE_ALL_DIALOGS');

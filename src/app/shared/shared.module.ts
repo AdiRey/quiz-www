@@ -10,6 +10,9 @@ import { HasTokenGuard } from './guards/has-token.guard';
 import { ConfirmEntryComponent } from './components/confirm-entry/confirm-entry.component';
 import { FormWrapperComponent } from './components/form-wrapper/form-wrapper.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { RedirectionEffect } from './store/redirection';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [LogoComponent, MessageContainerComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent],
@@ -17,7 +20,9 @@ import { LoaderComponent } from './components/loader/loader.component';
     CommonModule,
     RouterModule,
     HttpClientModule,
-    EffectsModule.forFeature([NotificationEffect])
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    EffectsModule.forFeature([NotificationEffect, RedirectionEffect])
   ],
   providers: [HasTokenGuard],
   exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent],
