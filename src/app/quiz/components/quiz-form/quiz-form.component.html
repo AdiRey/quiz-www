@@ -1,1 +1,169 @@
-<p>quiz-form works!</p>
+<section class="form-container">
+    <mat-horizontal-stepper #stepper class="stepper">
+
+        <mat-step [stepControl]="form.controls['basic']" errorMessage="Błędy w formularzu">
+            <form *ngIf="form.controls['basic'] as basic" [formGroup]="basic" class="form">
+              <ng-template matStepLabel>Podstawowe dane</ng-template>
+
+                <mat-form-field appearance="fill" >
+                  <mat-label>Nazwa quizu</mat-label>
+                  <input matInput #quizName formControlName="name" maxlength="50">
+                  <mat-hint align="end">{{quizName.value?.length || 0}}/50</mat-hint>
+                  <mat-error *ngIf="basic['controls']['name'].invalid">Nazwa jest wymagana.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="textarea">
+                  <mat-label>Opis</mat-label>
+                  <textarea matInput
+                      rows="7"
+                      formControlName="description">
+                  </textarea>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" hintLabel="Domyślnie nielimitowany">
+                  <mat-label>Czas trwania quizu</mat-label>
+                  <input matInput formControlName="quizTime" type="number">
+                  <span matSuffix>
+                    minut
+                  </span>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>Data rozpoczęcia quizu</mat-label>
+                  <input matInput formControlName="quizStartTime" [matDatepicker]="startPicker">
+                  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>Data zakończenia quizu</mat-label>
+                  <input matInput formControlName="quizEndTime" [matDatepicker]="endPicker">
+                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+
+                <div class="ml-auto">
+                  <button mat-raised-button color="primary" matStepperNext>
+                    Następna
+                  </button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step>
+            <form [formGroup]="form" class="form">
+              <ng-template matStepLabel>Obrazek</ng-template>
+              <section class="form__image-section">
+                
+                <div class="my-container">
+                  <input 
+                    #img
+                    type='file'
+                    accept="image/*"
+                    class="form__image-section--file"
+                    (change)="change(img, 'quizImg')"/>
+                  <img id="quizImg" width="600px" height="400px"/>
+                </div>
+
+                <div class="buttons">
+                  <button mat-raised-button color="primary" matStepperPrevious>Poprzednia</button>
+                  <button mat-raised-button color="primary" matStepperNext>Następna</button>
+                </div>
+              </section>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="form.controls['questions']" errorMessage="Błędy w pytaniach">
+            <form [formGroup]="form" class="form">
+                <ng-template matStepLabel>Pytania</ng-template>
+                <div formArrayName="questions" class="w-100 d-flex flex-column">
+                  <div *ngFor="let question of questions.controls; let questionId=index" [formGroupName]="questionId" class="question">
+
+                    <span class="question__number"> Numer pytania: {{ questionId + 1 }} </span>
+
+                    <mat-form-field appearance="fill" class="textarea">
+                      <mat-label>Treść pytania</mat-label>
+                      <textarea matInput
+                          rows="7"
+                          formControlName="content">
+                      </textarea>
+                      <mat-error *ngIf="question['controls']['content'].invalid">Treść jest wymagana.</mat-error>
+                    </mat-form-field>
+
+                    <div class="my-container-sm ml-auto mr-auto">
+                      <input
+                        #img
+                        type='file'
+                        accept="image/*"
+                        class="form__image-section--file"
+                        (change)="change(img, 'q' + questionId)"/>
+                      <img [id]="'q' + questionId" width="300px" height="200px"/>
+                    </div>
+
+                    <div class="item-mr-10">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Liczba punktów</mat-label>
+                        <input matInput formControlName="amountOfPoints" type="number" required>
+                        <mat-error *ngIf="question['controls']['amountOfPoints'].invalid">
+                          Liczba punktów jest wymagana i musi być większa od 0.
+                        </mat-error>
+                      </mat-form-field>
+  
+                      <mat-form-field appearance="fill">
+                        <mat-label>Typ pytania</mat-label>
+                        <mat-select formControlName="questionType" #select>
+                          <mat-option *ngFor="let option of options" [value]="option.value">
+                            {{option.label}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="question['controls']['questionType'].invalid">
+                          Typ pytania jest wymagany.
+                        </mat-error>
+                      </mat-form-field>
+                      <button
+                        mat-raised-button color="basic"
+                        (click)="addAnswer(questionId)"
+                        [disabled]="!select.value">
+                        Dodaj odpowiedź
+                      </button>
+                    </div>
+
+                    <mat-radio-group formControlName="correctRadio">
+                      <ol formArrayName="answers" class="question__ol">
+                        <li *ngFor="let answer of answers(questionId).controls; let answerId=index" [formGroupName]="answerId">
+  
+                          <mat-checkbox *ngIf="select.value === 'checkbox'" formControlName="correct"></mat-checkbox>
+                          <mat-radio-button *ngIf="select.value === 'radio'" [value]="answerId"></mat-radio-button>
+  
+                          <mat-form-field appearance="fill" >
+                            <mat-label>Odpowiedź</mat-label>
+                            <input matInput #answerContent formControlName="answerContent" maxlength="50">
+                            <mat-hint align="end">{{answerContent.value?.length || 0}}/50</mat-hint>
+                            <!-- <mat-error *ngIf="answer['controls']['answerContent'].invalid">Odpowiedź jest wymagana.</mat-error> -->
+                          </mat-form-field>
+                        </li>
+                      </ol>
+                    </mat-radio-group>
+
+                  </div>
+                  <span *ngIf="!questions.controls.length" class="empty-info">Brak pytań.</span>
+                  <button mat-raised-button color="accent" (click)="addQuestion()">Dodaj pytanie</button>
+                </div>
+                <div class="fixed-button">
+                  <button mat-raised-button color="primary" matStepperPrevious>Poprzednia</button>
+                  <button mat-raised-button color="primary" matStepperNext>Następna</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step >
+            <ng-template matStepLabel>Zakończone</ng-template>
+            <h2>Gratulacje!</h2>
+            <p>Pomyślnie utworzyłeś formularz!</p>
+            <div>
+              <button mat-raised-button color="accent" (click)="save()">Zapisz</button>
+              <button mat-raised-button matStepperPrevious>Zakończ</button>
+              <button mat-raised-button color="primary" (click)="stepper.reset() ">Utwórz nowy</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</section>

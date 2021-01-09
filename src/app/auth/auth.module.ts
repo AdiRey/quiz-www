@@ -10,15 +10,19 @@ import { AuthEffect } from './store/auth.effects';
 import { StoreModule } from '@ngrx/store';
 import { authReducer } from './store';
 import { EffectsModule } from '@ngrx/effects';
+import { AuthPageComponent } from './components/auth-page/auth-page.component';
+import { AuthLoaderComponent } from './components/auth-loader/auth-loader.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [AuthComponent],
+  declarations: [AuthComponent, AuthPageComponent, AuthLoaderComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
     SharedModule,
     MatButtonModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forFeature([AuthEffect])
   ]

@@ -2,7 +2,7 @@
     <button mat-raised-button class="navbar__button" (click)="sidenav.toggle()">
         <i class="fa fa-bars"></i>
     </button>
-    <app-logo></app-logo>
+    <!-- <app-logo></app-logo> -->
     <button mat-button [matMenuTriggerFor]="menu" class="navbar__mat-button">
       Adrian Kowal
       <i class="fa fa-chevron-down"></i>
@@ -18,12 +18,27 @@
         <mat-sidenav #sidenav mode="side" [(opened)]="opened">
           <ul class="sidenav-list">
               <li *ngFor="let item of items" class="sidenav-list__li">
-                  <a [routerLink]="item.route">{{ item.content }}</a>
+                  <a [routerLink]="item.route" [routerLinkActive]="['active']">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    <span>{{ item.content }}</span>
+                  </a>
               </li>
           </ul>
         </mat-sidenav>
       
         <mat-sidenav-content>
+          <section class="breadrumbs">
+            <span>
+              <mat-icon>category</mat-icon>
+              Kategorie
+            </span>
+            <div>
+              <button mat-raised-button color="accent" (click)="buttonClick()">
+                <mat-icon>add</mat-icon>
+                Dodaj kategorię
+              </button>
+            </div>
+          </section>
           <router-outlet></router-outlet>
         </mat-sidenav-content>
       </mat-sidenav-container>

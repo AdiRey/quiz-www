@@ -1,0 +1,17 @@
+<app-form-wrapper header="Edycja kategorii">
+    <form [formGroup]="form" class="form form-center">
+        <section class="form__content-section">
+            <mat-form-field appearance="fill">
+                <mat-label>Nazwa</mat-label>
+                <input matInput formControlName="name">
+                <mat-error>Nazwa musi mieć co najmniej dwa znaki</mat-error>
+            </mat-form-field>
+        </section>
+        <section class="form__button-section">
+            <button mat-raised-button (click)="cancel()">Anuluj</button>
+            <button mat-raised-button color="accent" [disabled]="form.invalid" (click)="save()">
+                Zapisz
+            </button>
+        </section>
+    </form>
+</app-form-wrapper>

@@ -7,7 +7,7 @@ export const environment = {
 };
 
 export const config = {
-  apiUrl: 'http://localhost:4200/assets/content/'
+  apiUrl: 'https://quiz-app-twij.herokuapp.com/api/'
 }
 
 /*

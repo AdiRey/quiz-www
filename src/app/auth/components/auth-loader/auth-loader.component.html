@@ -1,0 +1,19 @@
+<section class="main-section">
+    <div class="loader-section col-lg-4 col-sm-6 col-xs-8 col-12">
+        <div *ngIf="loading$ | async; else errorMessage">
+            <mat-spinner diameter="150" color="accent"></mat-spinner>
+            <h4 class="loader-section__h4 col-12">
+                Trwa proces weryfikacji. 
+                Po pomyślnym ukończeniu zostaniesz automatycznie przeniesiony do dashboardu.
+            </h4>
+            <span class="loader-section__span col-12">Proces weryfikacji... Proszę czekać.</span>
+        </div>
+        <ng-template #errorMessage>
+            <h1 class="loader-section__h1">
+                Nie udało się zalogować.<br>
+                Proszę spróbować ponownie.<br>
+                <button [routerLink]="['/auth/main']" mat-raised-button color="accent">Zaloguj</button>
+            </h1>
+        </ng-template>
+    </div>
+</section>

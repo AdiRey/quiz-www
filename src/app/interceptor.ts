@@ -1,7 +1,8 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
+import { LocalStorage } from './shared/service/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class Interceptor implements HttpInterceptor {
             'Accept': 'application/json'
         };
 
-        const token = localStorage.getItem('token');
+        const token = LocalStorage.getToken();
 
         if (!!token) {
             headers['Authorization'] = "Bearer " + token;
@@ -26,8 +27,10 @@ export class Interceptor implements HttpInterceptor {
         });
         
         return next.handle(req).pipe(
+            timeout(5000),
             catchError((error: any) => {
                 let reason: string;
+                console.log(error);
                 switch (error.status) {
                     case 401:
                         reason = 'Brak aktywnej sesji';

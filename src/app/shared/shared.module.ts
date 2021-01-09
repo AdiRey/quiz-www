@@ -4,20 +4,23 @@ import { LogoComponent } from './components/logo/logo.component';
 import { RouterModule } from '@angular/router';
 import { MessageContainerComponent } from './components/message-container/message-container.component';
 import { HttpClientModule } from '@angular/common/http';
-import { StoreModule } from '@ngrx/store';
-import { toastrReducer as notificationReducer } from './store/toast/toastr.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ToastrEffect as NotificationEffect } from './store/toast/toastr.effects';
+import { HasTokenGuard } from './guards/has-token.guard';
+import { ConfirmEntryComponent } from './components/confirm-entry/confirm-entry.component';
+import { FormWrapperComponent } from './components/form-wrapper/form-wrapper.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
-  declarations: [LogoComponent, MessageContainerComponent],
+  declarations: [LogoComponent, MessageContainerComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent],
   imports: [
     CommonModule,
     RouterModule,
     HttpClientModule,
-    StoreModule.forFeature('notification', notificationReducer),
     EffectsModule.forFeature([NotificationEffect])
   ],
-  exports: [LogoComponent]
+  providers: [HasTokenGuard],
+  exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent],
+  entryComponents: [ConfirmEntryComponent]
 })
 export class SharedModule { }

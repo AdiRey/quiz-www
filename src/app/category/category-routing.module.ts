@@ -1,11 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CategoryComponent } from './category.component';
+import { CategoryFormComponent } from './components/category-form/category-form.component';
+import { CategoryTableComponent } from './components/category-table/category-table.component';
+import { CategoryComponent } from './components/category.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CategoryComponent
+    component: CategoryComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'table',
+        pathMatch: 'full'
+      },
+      {
+        path: 'table',
+        component: CategoryTableComponent
+      }
+    ]
   }
 ];
 

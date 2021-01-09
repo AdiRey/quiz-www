@@ -1,5 +1,5 @@
 .category {
-  padding-bottom: 30px;
+  padding-bottom: 10px;
   &__h2 {
     text-transform: uppercase;
     font-family: "Lato", sans-serif;
@@ -18,10 +18,11 @@
   font-family: "Lato", sans-serif;
   font-weight: bolder;
   font-style: italic;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
   button {
     margin-left: 10px;
     text-transform: uppercase;
+    background-color: #007bff;
   }
 }
 
@@ -40,7 +41,7 @@
     margin: 0 3px;
     padding: 10px;
     border-radius: 5px;
-    background-color: #27a0ad;
+    background-color: #017bbd;
     cursor: pointer;
   }
   .swiper-pagination {

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { JwtTokenHelper } from '../service/jwt-token-helper.service';
+import { LocalStorage } from '../service/local-storage.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class HasTokenGuard implements CanActivate {
 
   constructor(
@@ -13,11 +12,12 @@ export class HasTokenGuard implements CanActivate {
   ) {}
 
   canActivate() {
-    const token = localStorage.getItem('jwt-token');
-    if (!!token && this._jwtSerivce.isTokenExpired(token)) {
-      this._router.navigate(['/auth']);
-      return false;
-    }
+    const token = LocalStorage.getToken();
+    // if (!!token && this._jwtSerivce.isTokenExpired(token)) {
+    //   this._router.navigate(['/auth']);
+    //   LocalStorage.clearAuth();
+    //   return false;
+    // }
     return true;
   }
   

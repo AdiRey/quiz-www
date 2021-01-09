@@ -1,0 +1,11 @@
+<section class="form-wrapper">
+    <h1 *ngIf="header" class="form-wrapper__header">
+        {{ header }}
+    </h1>
+    <p *ngIf="description" class="form-wrapper__description">
+        {{ description }}
+    </p>
+    <section class="wrapper-content">
+        <ng-content></ng-content>
+    </section>
+</section>

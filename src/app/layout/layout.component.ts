@@ -11,33 +11,43 @@ export class LayoutComponent implements OnInit {
   public items = [
     {
       route: '/q/dashboard',
-      content: 'strona główna'
+      content: 'strona główna',
+      icon: 'video_label'
     },
     {
       route: '/q/quiz',
-      content: 'quizy'
+      content: 'quizy',
+      icon: 'school'
     },
     {
-      route: '/q/quiz',
-      content: 'wyniki'
+      route: '/q/quiz2',
+      content: 'wyniki',
+      icon: 'score'
     },
     {
       route: '/q/rank',
-      content: 'rankingi'
+      content: 'rankingi',
+      icon: 'moving'
     },
     {
-      route: '/q/quiz',
-      content: 'moje quizy'
+      route: '/q/quiz3',
+      content: 'moje quizy',
+      icon: 'emoji_objects'
     },
     {
       route: '/q/category',
-      content: 'kategorie'
+      content: 'kategorie',
+      icon: 'category'
     }
   ];
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public buttonClick() {
+    console.log('xd');
   }
 
 }

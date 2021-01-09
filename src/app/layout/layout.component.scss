@@ -7,20 +7,26 @@
 
 .navbar {
   height: 50px;
-  background: linear-gradient(to left, rgba(74, 78, 81, 0.8), #4a4e51);
+  background: linear-gradient(to right, #0178bc 0%, #00bdda 100%);
   padding: 0;
   display: flex;
   justify-content: flex-start;
-  color: #d1d1d1;
-  font-size: 1.1rem;
+  color: #54667a;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.04), 0 3px 3px 0 rgb(0, 0, 0, 0.042),
+    0 7px 6px 0 rgba(0, 0, 0, 0.048), 0 10px 8px 0 rgba(0, 0, 0, 0.1);
+  z-index: 2;
   &__button {
     border-radius: 0;
     padding: 0;
+    margin: 0;
     outline: none;
-    background-color: #4a4e51;
+    background-color: transparent;
+    color: #eee;
+    box-shadow: none !important;
   }
   &__mat-button {
     margin-left: auto;
+    font-size: 1.2rem;
     &:focus {
       outline: none;
     }
@@ -45,41 +51,75 @@
 
 .main-window {
   height: calc(100vh - 50px);
-  background-color: grey;
   mat-sidenav-container {
-    background-color: white;
+    background-color: #fff;
     height: 100%;
     mat-sidenav,
     mat-sidenav-content {
       min-width: 150px;
     }
     mat-sidenav {
-      box-shadow: 5px 0px 10px 1px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22) !important;
+      background-color: #fff;
       .sidenav-list {
         padding-top: 20px;
         &__li {
-          cursor: pointer;
           display: flex;
-          transition: background-color 0.2s;
           a {
             text-decoration: none;
-            color: white;
+            color: #343a41;
             text-transform: uppercase;
             font-family: "Lato", sans-serif;
-            width: 100%;
-            height: 100%;
             padding: 10px 20px;
-          }
-          &:hover {
-            background-color: darkgrey;
+            margin: 2px 10px;
+            line-height: 1.2rem;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            border-radius: 3px;
+            span {
+              padding-left: 5px;
+            }
+            &:hover {
+              color: #007bff;
+              background-color: #dadada;
+            }
           }
         }
       }
     }
     .mat-sidenav-content {
-      background-color: rgb(169, 173, 176) !important;
+      background-color: #eef2f3; // #f4f6f9;
       color: black;
-      // padding: 50px 25px;
+    }
+  }
+}
+
+.active {
+  color: #fff !important;
+  background-color: #007bff !important;
+}
+
+.breadrumbs {
+  width: 100%;
+  height: 75px;
+  background-color: #f7f9f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  // box-shadow: 0 2px 3px 0 rgba(126, 84, 84, 0.014),
+  //   0 4px 5px 0 rgba(0, 0, 0, 0.024), 0 5px 6px 0 rgba(0, 0, 0, 0.045),
+  //   0 6px 10px 0 rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #ddd;
+  span {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    color: #fe3d8a;
+    * {
+      margin-right: 3px;
     }
   }
 }
