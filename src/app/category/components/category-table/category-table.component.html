@@ -2,8 +2,8 @@
     <mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="lp">
-            <mat-header-cell *matHeaderCellDef class="col-2">Lp</mat-header-cell>
-            <td *matCellDef="let element" class="col-2">{{ element.lp }}</td>
+            <mat-header-cell *matHeaderCellDef class="col-1">Lp</mat-header-cell>
+            <td *matCellDef="let element" class="col-1">{{ element.lp }}</td>
         </ng-container>
 
         <ng-container matColumnDef="name">
@@ -11,14 +11,14 @@
             <td *matCellDef="let element" class="col-3">{{ element.name }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Id</mat-header-cell>
-            <td *matCellDef="let element" class="col-2">{{ element.id }}</td>
+        <ng-container matColumnDef="createDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Data utworzenia</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.createDate | date:'medium' }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="createDate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Data utworzenia</mat-header-cell>
-            <td *matCellDef="let element" class="col-3">{{ element.id }}</td>
+        <ng-container matColumnDef="countQuizzes">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Ilość quizów</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.countQuizzes }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

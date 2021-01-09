@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { AbstractRestApiModel, PaginationModel } from "./abstract-rest-api.model";
+import { AbstractResponseArrayModel, AbstractRestApiModel, PaginationModel } from "./abstract-rest-api.model";
 import { RestBuilder } from "./rest-builder";
 
 export abstract class AbstractRestApi<M = Object> {
@@ -13,9 +13,9 @@ export abstract class AbstractRestApi<M = Object> {
 
     public getAll<T = Object>(
         model: PaginationModel<M>
-    ): Observable<Array<T>> {
+    ): Observable<AbstractResponseArrayModel<T>> {
         return this.httpClient
-            .get<Array<T>>(
+            .get<AbstractResponseArrayModel<T>>(
                 RestBuilder.getUrl(model?.additionalPath? this.path + '/' + model.additionalPath : this.path), {
                     params: RestBuilder.getParams(model.pagination)
                 }

@@ -29,12 +29,12 @@
       <section class="breadrumbs">
         <span>
           <mat-icon>category</mat-icon>
-          Kategorie
+          <span>Kategorie</span>
         </span>
-        <div>
-          <button mat-raised-button color="accent" (click)="buttonClick()">
-            <mat-icon>add</mat-icon>
-            Dodaj kategorię
+        <div *ngIf="header$ | async as header">
+          <button mat-raised-button color="accent" (click)="header.action()">
+            <mat-icon>{{ header.icon }}</mat-icon>
+            {{ header.text }}
           </button>
         </div>
       </section>

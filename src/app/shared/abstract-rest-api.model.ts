@@ -19,6 +19,15 @@ export interface PaginationModel<M> {
     params?: { [K in keyof M]: M[K] | Array<M[K]> };
 }
 
+export interface AbstractResponseArrayModel<M> {
+    list: Array<M>;
+    paginator: {
+        pageNumber: number;
+        pageSize: number;
+        totalElements: number;
+    }
+}
+
 export enum Observe {
     BODY = 'body',
     EVENTS = 'events',

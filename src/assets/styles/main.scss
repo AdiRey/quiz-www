@@ -80,3 +80,7 @@ mat-dialog-container {
     padding: 30px;
   }
 }
+
+button[mat-raised-button] {
+  outline: none !important;
+}

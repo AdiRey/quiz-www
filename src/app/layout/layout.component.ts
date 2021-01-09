@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { HeaderService } from '@shared/service/header.service';
+import { Observable } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
@@ -6,7 +10,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
+
   public opened: boolean = true;
+
+  public header$ = this._headerService.getAction();
+
+  public currentLink$: Observable<string>;
+  public itemsObj = {};
 
   public items = [
     {
@@ -41,13 +51,20 @@ export class LayoutComponent implements OnInit {
     }
   ];
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    private readonly _router: Router,
+    private readonly _headerService: HeaderService
+  ) {
+    this.currentLink$ = this._router.events.pipe(
+      filter(f => f instanceof NavigationEnd),
+      map((data: NavigationStart) => data.url)
+    );
   }
 
-  public buttonClick() {
-    console.log('xd');
+  ngOnInit(): void {
+    for (let i of this.items) {
+      this.itemsObj[i.route] = { content: i.content, icon: i.icon };
+    }
   }
 
 }

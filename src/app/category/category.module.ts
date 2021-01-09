@@ -1,5 +1,7 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { registerLocaleData } from '@angular/common'
+import localePl from '@angular/common/locales/pl';
 
 import { CategoryRoutingModule } from './category-routing.module';
 import { CategoryComponent } from './components/category.component';
@@ -20,6 +22,9 @@ import { StoreModule } from '@ngrx/store';
 import { categoryReducer } from './store/category.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { CategoryEffect } from './store/category.effects';
+
+
+registerLocaleData(localePl);
 
 
 @NgModule({
@@ -44,6 +49,11 @@ import { CategoryEffect } from './store/category.effects';
   ],
   entryComponents: [
     CategoryFormComponent
+  ],
+  providers: [
+    {
+      provide: LOCALE_ID, useValue: 'pl-PL'
+    }
   ]
 })
 export class CategoryModule { }

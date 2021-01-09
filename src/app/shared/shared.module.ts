@@ -25,7 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     EffectsModule.forFeature([NotificationEffect, RedirectionEffect])
   ],
   providers: [HasTokenGuard],
-  exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent],
+  exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent],
   entryComponents: [ConfirmEntryComponent]
 })
 export class SharedModule { }

@@ -99,11 +99,10 @@ export class QuizDataSource<T = any> implements DataSource<T> {
                 catchError(() => []),
                 finalize(() => this._loading$$.next(false))
             ).subscribe(data => {
-                this._dataTable = JSON.parse(data.content);
-                console.log(JSON.parse(data.content));
-                this._data$$.next(JSON.parse(data.content));
+                this._dataTable = data.list;
+                this._data$$.next(data.list);
                 if (this._paginator) {
-                    this._paginator.length = data.length;
+                    this._paginator.length = data.paginator.totalElements;
                 }
             })
         );

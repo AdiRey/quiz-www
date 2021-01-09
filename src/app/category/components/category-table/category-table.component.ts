@@ -11,6 +11,8 @@ import * as CategoryActions from '../../store/category.actions';
 import { ConfirmModel } from '@shared/model/components/confirm-entry.model';
 import { IdModel } from '@shared/model/components/id.model';
 import { selectLoading } from '../../store/category.selector';
+import { HeaderService } from '@shared/service/header.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-category-table',
@@ -19,7 +21,7 @@ import { selectLoading } from '../../store/category.selector';
 })
 export class CategoryTableComponent implements OnInit, AfterViewInit {
 
-  public columns: Array<string> = ['lp', 'name', 'id', 'createDate', 'actions'];
+  public columns: Array<string> = ['lp', 'name', 'createDate', 'countQuizzes', 'actions'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
@@ -28,26 +30,27 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
 
   constructor(
     private readonly _categoryService: CategoryRestApiService,
-    private readonly _matDialog: MatDialog
+    private readonly _matDialog: MatDialog,
+    private readonly _headerService: HeaderService
   ) { }
 
   ngOnInit(): void {
     this.dataSource.loadData();
+    this._headerService.setAction({
+      text: 'Dodaj kategorię',
+      icon: 'add',
+      action: () => this._matDialog.open<CategoryFormComponent, CategoryEditModel>(CategoryFormComponent, {
+        minWidth: '700px',
+        data: {
+          isEdit: false
+        }
+      }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe()
+    });
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sorter = this.matSort;
-  }
-  
-  public openCreateDialog() {
-    this._matDialog.open<CategoryFormComponent, CategoryEditModel>(CategoryFormComponent, {
-      minHeight: '500px',
-      minWidth: '700px',
-      data: {
-        isEdit: false
-      }
-    });
   }
 
   public edit(element: CategoryModel) {
@@ -57,7 +60,7 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
         isEdit: true,
         content: element
       }
-    })
+    }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe();
   }
 
   public delete(element: CategoryModel) {
@@ -68,6 +71,6 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
         action: CategoryActions.DELETE_CATEGORY,
         loadingSelector: selectLoading
       }
-    })
+    }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe();
   }
 }

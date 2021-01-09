@@ -5,7 +5,9 @@ import { Store } from '@ngrx/store';
 import { CategoryRestApiService } from '@shared/api-service/category/category.service';
 import { CategoryEditModel } from '@shared/model/category.model';
 import { AppState } from '@shared/store/app-state';
+import { Observable } from 'rxjs';
 import * as CategoryActions from '../../store/category.actions';
+import { selectLoading } from '../../store/category.selector';
 
 @Component({
   selector: 'app-category-form',
@@ -15,11 +17,12 @@ import * as CategoryActions from '../../store/category.actions';
 export class CategoryFormComponent implements OnInit {
 
   public form: FormGroup;
+  public loading$: Observable<boolean> = this._store.select(selectLoading);
 
   constructor(
     private readonly _formBuilder: FormBuilder,
     private readonly _dialogRef: MatDialogRef<CategoryFormComponent>,
-    @Inject(MAT_DIALOG_DATA) private _data: CategoryEditModel,
+    @Inject(MAT_DIALOG_DATA) public data: CategoryEditModel,
     private readonly _store: Store<AppState>
   ) { }
 
@@ -27,9 +30,9 @@ export class CategoryFormComponent implements OnInit {
     this.form = this._formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2)]]
     });
-    if (this._data.isEdit) {
+    if (this.data.isEdit) {
       for (let prop in this.form.controls) {
-        this.form.controls[prop].setValue(this._data.content[prop])
+        this.form.controls[prop].setValue(this.data.content[prop])
       }
     }
   }
@@ -40,9 +43,9 @@ export class CategoryFormComponent implements OnInit {
 
   public save() {
     this._store.dispatch(
-      this._data.isEdit?
+      this.data.isEdit?
         CategoryActions.EDIT_CATEGORY({
-          id: this._data.content.id,
+          id: this.data.content.id,
           body: this.form.value
         }) :
         CategoryActions.ADD_CATEGORY(this.form.value)
