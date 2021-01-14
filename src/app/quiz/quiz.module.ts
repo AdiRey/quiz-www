@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { QuizRoutingModule } from './quiz-routing.module';
 import { QuizComponent } from './components/quiz.component';
-import { SwiperModule } from 'swiper/angular';
 import { QuizFormComponent } from './components/quiz-form/quiz-form.component';
-import { QuizViewsComponent } from './components/quiz-views/quiz-views.component';
+import { QuizViewsComponent } from './components/quiz-table/quiz-table.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
+import { MAT_DATE_LOCALE  } from '@angular/material/core';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,13 +20,24 @@ import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
 import { QuizEffect, quizReducer } from './store';
 import { EffectsModule } from '@ngrx/effects';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSortModule } from '@angular/material/sort';
+import { QuizIntermediateComponent } from './components/quiz-intermediate/quiz-intermediate.component';
+import { registerLocaleData } from '@angular/common'
+import localePl from '@angular/common/locales/pl';
+
+registerLocaleData(localePl);
+
 
 @NgModule({
-  declarations: [QuizComponent, QuizFormComponent, QuizViewsComponent],
+  declarations: [QuizComponent, QuizFormComponent, QuizViewsComponent, QuizIntermediateComponent],
   imports: [
     CommonModule,
     QuizRoutingModule,
-    SwiperModule,
     SharedModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -36,19 +45,27 @@ import { EffectsModule } from '@ngrx/effects';
     MatStepperModule,
     MatTooltipModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatTableModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxMatNativeDateModule,
     StoreModule.forFeature('quiz', quizReducer),
     EffectsModule.forFeature([QuizEffect])
   ],
   providers: [
     MatDatepickerModule,
     { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
-    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true, displayDefaultIndicatorType: false }}
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true, displayDefaultIndicatorType: false }},
+    { provide: LOCALE_ID, useValue: 'pl-PL' }
   ]
 })
 export class QuizModule { }

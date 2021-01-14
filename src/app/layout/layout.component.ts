@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterEvent } from '@angular/router';
 import { HeaderService } from '@shared/service/header.service';
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, skip, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
@@ -25,12 +25,17 @@ export class LayoutComponent implements OnInit {
       icon: 'video_label'
     },
     {
+      route: '/q/news',
+      content: 'nowe',
+      icon: 'fiber_new'
+    },
+    {
       route: '/q/quiz',
       content: 'quizy',
       icon: 'school'
     },
     {
-      route: '/q/quiz2',
+      route: '/q/scores',
       content: 'wyniki',
       icon: 'score'
     },
@@ -38,11 +43,6 @@ export class LayoutComponent implements OnInit {
       route: '/q/rank',
       content: 'rankingi',
       icon: 'moving'
-    },
-    {
-      route: '/q/quiz3',
-      content: 'moje quizy',
-      icon: 'emoji_objects'
     },
     {
       route: '/q/category',
@@ -55,10 +55,11 @@ export class LayoutComponent implements OnInit {
     private readonly _router: Router,
     private readonly _headerService: HeaderService
   ) {
-    this.currentLink$ = this._router.events.pipe(
+    this._router.events.pipe(
       filter(f => f instanceof NavigationEnd),
-      map((data: NavigationStart) => data.url)
-    );
+      distinctUntilChanged((prev: NavigationEnd, next: NavigationEnd) => prev.url === next.url ),
+      tap(() => this._headerService.setAction(null)),
+    ).subscribe();
   }
 
   ngOnInit(): void {

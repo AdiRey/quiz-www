@@ -1,0 +1,63 @@
+<section class="table-wrapper">
+    <mat-table [dataSource]="dataSource" matSort>
+        <!-- ['lp', 'title', 'startDate', 'endingDate', 'time', 'category', 'actions'] -->
+
+        <ng-container matColumnDef="lp">
+            <mat-header-cell *matHeaderCellDef class="col-1">Lp</mat-header-cell>
+            <td *matCellDef="let element" class="col-1">{{ element.lp }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Tytuł</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.title }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Data rozpoczęcia</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.startDate | date:'medium' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="endingDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Data zakończenia</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.endingDate | date:'medium' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-1">Czas trwania</mat-header-cell>
+            <td *matCellDef="let element" class="col-1">{{ element.time }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+            <mat-header-cell *matHeaderCellDef class="col-2">Kategoria</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.category.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef class="col-2 action-header">Akcje</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">
+                <div class="action-buttons">
+                    <button mat-icon-button color="warn" title="Wypełnij" (click)="edit(element)">
+                        <mat-icon>double_arrow</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" title="Edytuj" (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" title="Usuń" (click)="delete(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+    </mat-table>
+    <mat-paginator
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    [pageSize]="20"
+    showFirstLastButtons>
+    </mat-paginator>
+    <section class="mat-spinner-wrapper" *ngIf="dataSource.loading$ | async">
+        <mat-spinner diameter="100" color="accent"></mat-spinner>
+    </section>
+</section>

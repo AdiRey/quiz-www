@@ -41,8 +41,8 @@ mat-dialog-container {
   border-radius: 10px !important;
 }
 
-.p-25-25 {
-  padding: 25px 150px;
+.module-content {
+  padding: 25px;
   position: relative;
 }
 
@@ -83,4 +83,43 @@ mat-dialog-container {
 
 button[mat-raised-button] {
   outline: none !important;
+}
+
+.table-wrapper {
+  position: relative;
+}
+
+.mat-spinner-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.action-buttons,
+.action-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-buttons {
+  button {
+    outline: none !important;
+  }
+}
+
+.action-header {
+  justify-content: flex-end;
+}
+
+mat-table {
+  & > mat-row:nth-child(even) {
+    background-color: #f6f4f3;
+  }
 }

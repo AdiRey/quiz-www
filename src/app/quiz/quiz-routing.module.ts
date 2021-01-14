@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { QuizFormComponent } from './components/quiz-form/quiz-form.component';
-import { QuizViewsComponent } from './components/quiz-views/quiz-views.component';
+import { QuizIntermediateComponent } from './components/quiz-intermediate/quiz-intermediate.component';
+import { QuizViewsComponent } from './components/quiz-table/quiz-table.component';
 import { QuizComponent } from './components/quiz.component';
 
 const routes: Routes = [
@@ -21,6 +22,14 @@ const routes: Routes = [
       {
         path: 'add-quiz',
         component: QuizFormComponent
+      },
+      {
+        path: 'edit-quiz/:quizId',
+        component: QuizFormComponent
+      },
+      {
+        path: 'intermediate/:quizId',
+        component: QuizIntermediateComponent
       }
     ]
   }

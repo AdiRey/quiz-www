@@ -27,7 +27,7 @@ export class Interceptor implements HttpInterceptor {
         });
         
         return next.handle(req).pipe(
-            timeout(5000),
+            timeout(10000),
             catchError((error: any) => {
                 let reason: string;
                 console.log(error);
@@ -36,7 +36,7 @@ export class Interceptor implements HttpInterceptor {
                         reason = 'Brak aktywnej sesji';
                         break;
                     case 404:
-                        reason = 'Nie znaleziono danych'
+                        reason = 'Nie znaleziono danych. Odśwież stronę, jeśli to nie pomoże, skontaktuj się z administratorem.'
                         break;
                     default:
                         reason = 'Błąd serwera'

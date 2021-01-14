@@ -5,7 +5,7 @@ import { CategoryRestApiService } from "@shared/api-service/category/category.se
 import * as CategoryActions from '../store/category.actions';
 import * as ToastrActions from '../../shared/store/toast/toastr.actions';
 import { Injectable } from "@angular/core";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 
 @Injectable({
@@ -14,13 +14,13 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class CategoryEffect {
 
     constructor(
-        private readonly _actions: Actions,
+        private readonly _actions$: Actions,
         private readonly _categoryService: CategoryRestApiService,
         private readonly _dialogService: MatDialog
     ) {}
 
     addCategory$ = createEffect(() =>
-        this._actions.pipe(
+        this._actions$.pipe(
             ofType(CategoryActions.ADD_CATEGORY),
             switchMap(req =>
                 this._categoryService.save({
@@ -43,7 +43,7 @@ export class CategoryEffect {
     );
 
     editCategory$ = createEffect(() =>
-        this._actions.pipe(
+        this._actions$.pipe(
             ofType(CategoryActions.EDIT_CATEGORY),
             switchMap(req =>
                 this._categoryService.update<null>({
@@ -66,7 +66,7 @@ export class CategoryEffect {
     );
 
     deleteCategory$ = createEffect(() =>
-        this._actions.pipe(
+        this._actions$.pipe(
             ofType(CategoryActions.DELETE_CATEGORY),
             switchMap(req =>
                 this._categoryService.delete<null>({
@@ -88,7 +88,7 @@ export class CategoryEffect {
     );
 
     closeDialogs$ = createEffect(() =>
-        this._actions.pipe(
+        this._actions$.pipe(
             ofType(CategoryActions.CLOSE_ALL_DIALOGS),
             tap(() => this._dialogService.closeAll())
         ), { dispatch: false }

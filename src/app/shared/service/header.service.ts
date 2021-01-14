@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, Subject } from "rxjs";
 })
 export class HeaderService {
 
-    private _headerModel: Subject<HeaderModel> = new Subject<HeaderModel>();
+    private _headerModel: BehaviorSubject<HeaderModel> = new BehaviorSubject<HeaderModel>(null);
 
     constructor() {}
 

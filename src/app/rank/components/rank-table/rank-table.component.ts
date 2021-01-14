@@ -1,25 +1,24 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CategoryRestApiService } from '@shared/api-service/category/category.service';
 import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
-import { CategoryEditModel, CategoryModel } from '@shared/model/category.model';
-import { QuizDataSource } from '@shared/quiz-table.datasource';
-import { CategoryFormComponent } from '../category-form/category-form.component';
-import * as CategoryActions from '../../store/category.actions';
+import { CategoryModel, CategoryEditModel } from '@shared/model/category.model';
 import { ConfirmModel } from '@shared/model/components/confirm-entry.model';
 import { IdModel } from '@shared/model/components/id.model';
-import { selectLoading } from '../../store/category.selector';
+import { QuizDataSource } from '@shared/quiz-table.datasource';
 import { HeaderService } from '@shared/service/header.service';
 import { tap } from 'rxjs/operators';
+import { selectLoading } from 'src/app/auth/store';
+import { CategoryFormComponent } from 'src/app/category/components/category-form/category-form.component';
 
 @Component({
-  selector: 'app-category-table',
-  templateUrl: './category-table.component.html',
-  styleUrls: ['./category-table.component.scss']
+  selector: 'app-rank-table',
+  templateUrl: './rank-table.component.html',
+  styleUrls: ['./rank-table.component.scss']
 })
-export class CategoryTableComponent implements OnInit, AfterViewInit {
+export class RankTableComponent implements OnInit {
 
   public columns: Array<string> = ['lp', 'name', 'id', 'createDate', 'countQuizzes', 'actions'];
 
@@ -64,13 +63,13 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
   }
 
   public delete(element: CategoryModel) {
-    this._matDialog.open<ConfirmEntryComponent, ConfirmModel<CategoryModel, IdModel>>(ConfirmEntryComponent,{
-      data: {
-        message: 'Czy na pewno chcesz usunąć tą kategorię?',
-        element: element,
-        action: CategoryActions.DELETE_CATEGORY,
-        loadingSelector: selectLoading
-      }
-    }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe();
+    // this._matDialog.open<ConfirmEntryComponent, ConfirmModel<CategoryModel, IdModel>>(ConfirmEntryComponent,{
+    //   data: {
+    //     message: 'Czy na pewno chcesz usunąć tą kategorię?',
+    //     element: element,
+    //     action: CategoryActions.DELETE_CATEGORY,
+    //     loadingSelector: selectLoading
+    //   }
+    // }
   }
 }

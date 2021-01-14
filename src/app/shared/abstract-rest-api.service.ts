@@ -11,18 +11,18 @@ export abstract class AbstractRestApi<M = Object> {
         readonly httpClient: HttpClient
     ) {}
 
-    public getAll<T = Object>(
-        model: PaginationModel<M>
+    public getAll<T = M>(
+        model?: PaginationModel<M>
     ): Observable<AbstractResponseArrayModel<T>> {
         return this.httpClient
             .get<AbstractResponseArrayModel<T>>(
                 RestBuilder.getUrl(model?.additionalPath? this.path + '/' + model.additionalPath : this.path), {
-                    params: RestBuilder.getParams(model.pagination)
+                    params: RestBuilder.getParams(model?.pagination)
                 }
             );
     };
 
-    public get<T = Object>(
+    public get<T = M>(
         model: AbstractRestApiModel
     ): Observable<T> {
         return this.httpClient
@@ -40,7 +40,7 @@ export abstract class AbstractRestApi<M = Object> {
         );
     };
 
-    public update<T = any>(
+    public update<T = M>(
         model: AbstractRestApiModel
     ): Observable<T> {
         return this.httpClient.put<T>(

@@ -10,7 +10,7 @@ export interface AbstractRestApiModel {
 
 export interface PaginationModel<M> {
     additionalPath?: string;
-    pagination: {
+    pagination?: {
         direction: string;
         page: string;
         size: string;
@@ -19,7 +19,7 @@ export interface PaginationModel<M> {
     params?: { [K in keyof M]: M[K] | Array<M[K]> };
 }
 
-export interface AbstractResponseArrayModel<M> {
+export interface AbstractResponseArrayModel<M = any> {
     list: Array<M>;
     paginator: {
         pageNumber: number;

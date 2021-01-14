@@ -1,9 +1,10 @@
 export interface QuizModel {
-    name: string;
+    readonly id?: number;
+    title: string;
     description?: string;
-    quizTime?: number;
-    quizStartTime?: Object;
-    quizEndTime?: Object;
+    time?: number;
+    startTime?: any;
+    quizEndTime?: any;
     image?: string;
     questions: Array<QuestionModel>;
 }
@@ -12,13 +13,13 @@ export interface QuizModel {
 export interface QuestionModel {
     content: string;
     image?: string;
-    amountOfPoints: number;
-    questionType: string;
+    pointsCount: number;
+    type: string;
     answers: Array<AnswerModel>;
 }
 
 export interface AnswerModel {
-    answerContent: string;
+    content: string;
     correct: boolean;
 }
 

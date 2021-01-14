@@ -8,6 +8,9 @@ export class RestBuilder {
     }
 
     public static getParams(paramObject: Object): HttpParams {
+        if (!paramObject) {
+            return null;
+        }
         let params: HttpParams = new HttpParams();
         for (let prop in paramObject) {
             params = params.append(prop, paramObject[prop]);

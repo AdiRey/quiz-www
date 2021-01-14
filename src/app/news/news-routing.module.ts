@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RankTableComponent } from './components/rank-table/rank-table.component';
-import { RankComponent } from './components/rank.component';
+import { NewsViewComponent } from './components/news-view/news-view.component';
+import { NewsComponent } from './components/news.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: RankComponent,
+    component: NewsComponent,
     children: [
       {
         path: '',
-        redirectTo: 'table',
+        redirectTo: 'list',
         pathMatch: 'full'
       },
       {
-        path: 'table',
-        component: RankTableComponent
+        path: 'list',
+        component: NewsViewComponent
       }
     ]
   }
@@ -25,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class RankRoutingModule { }
+export class NewsRoutingModule { }

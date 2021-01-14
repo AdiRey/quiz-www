@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import SwiperCore, { Virtual, Navigation, Pagination } from 'swiper/core';
 
 SwiperCore.use([Virtual, Pagination, Navigation]);
 
 @Component({
-  selector: 'app-quiz-views',
-  templateUrl: './quiz-views.component.html',
-  styleUrls: ['./quiz-views.component.scss']
+  selector: 'app-news-view',
+  templateUrl: './news-view.component.html',
+  styleUrls: ['./news-view.component.scss']
 })
-export class QuizViewsComponent implements OnInit {
+export class NewsViewComponent implements OnInit {
 
   public pagination = {
     el: '.swiper-pagination',
@@ -24,13 +23,7 @@ export class QuizViewsComponent implements OnInit {
     revEl: '.swiper-button-prev'
   };
 
-  addQuiz() {
-    this._router.navigate(['/q/quiz/add-quiz'])
-  }
-
-  constructor(
-    private readonly _router: Router
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

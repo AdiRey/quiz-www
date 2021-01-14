@@ -7,7 +7,7 @@ import { QuizModel } from "../../model/quiz.model";
 @Injectable({
     providedIn: 'root'
 })
-export class QuizRestApi extends AbstractRestApi<QuizModel> {
+export class QuizRestApiService extends AbstractRestApi<QuizModel> {
 
     protected path: string = 'quiz';
 

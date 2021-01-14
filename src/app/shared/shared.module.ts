@@ -13,19 +13,28 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { RedirectionEffect } from './store/redirection';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OnCreateDirective } from './directives/on-create.directive';
+import { ImageContainerComponent } from './components/image-container/image-container.component';
 
 @NgModule({
-  declarations: [LogoComponent, MessageContainerComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent],
+  declarations: [
+    LogoComponent,
+    MessageContainerComponent,
+    ConfirmEntryComponent,
+    FormWrapperComponent,
+    LoaderComponent,
+    OnCreateDirective,
+    ImageContainerComponent],
   imports: [
     CommonModule,
-    RouterModule,
+    RouterModule.forChild([]),
     HttpClientModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     EffectsModule.forFeature([NotificationEffect, RedirectionEffect])
   ],
   providers: [HasTokenGuard],
-  exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent],
+  exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent, OnCreateDirective],
   entryComponents: [ConfirmEntryComponent]
 })
 export class SharedModule { }

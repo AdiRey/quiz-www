@@ -19,7 +19,7 @@ export class RedirectionEffect {
         this._actions$.pipe(
             ofType(RedirectionActions.REDIRECT),
             tap(data =>
-                this._router.navigate[data.url]
+                this._router.navigate([data.url])
             )
         ), { dispatch: false }
     );

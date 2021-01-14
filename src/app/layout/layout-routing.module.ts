@@ -19,18 +19,18 @@ const routes: Routes = [
         canActivate: [HasTokenGuard]
       },
       {
+        path: 'news',
+        loadChildren: () => import('../news/news.module').then(m => m.NewsModule),
+        canActivate: [HasTokenGuard]
+      },
+      {
         path: 'quiz',
         loadChildren: () => import('../quiz/quiz.module').then(m => m.QuizModule),
         canActivate: [HasTokenGuard]
       },
       {
-        path: 'quiz2',
-        loadChildren: () => import('../quiz/quiz.module').then(m => m.QuizModule),
-        canActivate: [HasTokenGuard]
-      },
-      {
-        path: 'quiz3',
-        loadChildren: () => import('../quiz/quiz.module').then(m => m.QuizModule),
+        path: 'scores',
+        loadChildren: () => import('../scores/scores.module').then(m => m.ScoresModule),
         canActivate: [HasTokenGuard]
       },
       {

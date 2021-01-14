@@ -6,26 +6,6 @@
     font-weight: bold;
   }
 }
-
-.header {
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 8px 28px;
-  width: 100%;
-  font-size: 20px;
-  line-height: 20px;
-  font-family: "Lato", sans-serif;
-  font-weight: bolder;
-  font-style: italic;
-  background-color: rgba(0, 0, 0, 0.05);
-  button {
-    margin-left: 10px;
-    text-transform: uppercase;
-    background-color: #007bff;
-  }
-}
-
 :host ::ng-deep {
   .swiper-container {
     width: 100%;
