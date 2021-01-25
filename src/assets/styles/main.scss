@@ -33,7 +33,7 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
 }
 
 mat-dialog-container {
@@ -87,6 +87,12 @@ button[mat-raised-button] {
 
 .table-wrapper {
   position: relative;
+  width: 75%;
+  margin: 0 auto;
+}
+
+.form-in-table-wrapper {
+  padding: 5px 20px;
 }
 
 .mat-spinner-wrapper {
@@ -122,4 +128,16 @@ mat-table {
   & > mat-row:nth-child(even) {
     background-color: #f6f4f3;
   }
+}
+
+button {
+  outline: none !important;
+}
+
+.max-width-lp {
+  max-width: 50px !important;
+}
+
+.max-width-actions {
+  max-width: 150px !important;
 }

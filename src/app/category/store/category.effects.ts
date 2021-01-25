@@ -1,11 +1,12 @@
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { catchError, mergeMap, switchMap, tap } from "rxjs/operators";
-import { CategoryRestApiService } from "@shared/api-service/category/category.service";
+import { CategoryRestApiService } from "@shared/api-service/category.service";
 import * as CategoryActions from '../store/category.actions';
 import * as ToastrActions from '../../shared/store/toast/toastr.actions';
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { DialogHandlerService } from "@shared/service/dialog-handler.service";
 
 
 @Injectable({
@@ -29,7 +30,7 @@ export class CategoryEffect {
                 }).pipe(
                     mergeMap(() => [
                         CategoryActions.ADD_CATEGORY_SUCCESS(),
-                        CategoryActions.CLOSE_ALL_DIALOGS(),
+                        CategoryActions.CLOSE_LAST_OPENED_DIALOG(),
                         ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie utworzono kategorię' })
                     ]),
                     catchError(error => of(
@@ -52,7 +53,7 @@ export class CategoryEffect {
                 }).pipe(
                     mergeMap(() => [
                         CategoryActions.ADD_CATEGORY_SUCCESS(),
-                        CategoryActions.CLOSE_ALL_DIALOGS(),
+                        CategoryActions.CLOSE_LAST_OPENED_DIALOG(),
                         ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie edytowano kategorię' })
                     ]),
                     catchError(error => of(
@@ -74,7 +75,7 @@ export class CategoryEffect {
                 }).pipe(
                     mergeMap(() => [
                         CategoryActions.DELETE_CATEGORY_SUCCESS(),
-                        CategoryActions.CLOSE_ALL_DIALOGS(),
+                        CategoryActions.CLOSE_LAST_OPENED_DIALOG(),
                         ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie usunięto kategorię' })
                     ]),
                     catchError(error => of(
@@ -85,6 +86,13 @@ export class CategoryEffect {
                 )
             )
         )
+    );
+
+    closeLastOpened$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(CategoryActions.CLOSE_LAST_OPENED_DIALOG),
+            tap(() => DialogHandlerService.closeDialog())
+        ), { dispatch: false }
     );
 
     closeDialogs$ = createEffect(() =>

@@ -9,6 +9,9 @@ export interface QuizModel {
     questions: Array<QuestionModel>;
 }
 
+export interface QuizApproachesModel {
+    count: number;
+}
 
 export interface QuestionModel {
     content: string;
@@ -21,5 +24,33 @@ export interface QuestionModel {
 export interface AnswerModel {
     content: string;
     correct: boolean;
+}
+
+export interface UserQuizWrappedModel {
+    array: Array<UserQuizModel>;
+}
+
+export interface UserQuizModel {
+    questionId: number;
+    answersId: Array<number>;
+}
+
+export interface QuizStartModel {
+    id: number;
+    questions: Array<QuizQuestionModel>;
+}
+
+export interface QuizQuestionModel{
+    id: number;
+    image: string;
+    pointsCount: number;
+    type: string;
+    content: string;
+    answers: Array<QuizAnswerModel>;
+}
+
+export interface QuizAnswerModel {
+    id: number;
+    content: string;
 }
 

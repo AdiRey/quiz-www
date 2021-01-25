@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AbstractRestApi } from "../../abstract-rest-api.service";
+import { AbstractRestApi } from "../abstract-rest-api.service";
 
 
 @Injectable({

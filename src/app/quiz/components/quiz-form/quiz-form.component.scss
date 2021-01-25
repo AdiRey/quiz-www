@@ -2,6 +2,7 @@
   ::ng-deep mat-horizontal-stepper {
     padding: 0 !important;
     .mat-horizontal-content-container {
+      min-height: calc(100vh - 400px) !important;
       padding-bottom: 0 !important;
     }
   }
@@ -9,9 +10,12 @@
     button {
       outline: none !important;
     }
+    .loader {
+      min-height: calc(100vh - 175px) !important;
+    }
   }
   .form-container {
-    min-height: calc(100vh - 50px);
+    min-height: calc(100vh - 175px);
   }
   .stepper {
     min-height: 100%;
@@ -119,16 +123,8 @@
         top: 15px;
         outline: none !important;
       }
-      .img-conts + .buttons {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-      }
       .buttons {
-        padding-top: 400px;
+        padding-top: 50px;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -170,5 +166,32 @@
         }
       }
     }
+  }
+}
+
+.end-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  align-items: center;
+  justify-content: center;
+  h2 {
+    color: #fe3d8a;
+    font-size: 2rem;
+  }
+  p {
+    font-size: 1.5rem;
+    font-style: italic;
+  }
+  & > * {
+    padding-bottom: 30px;
+  }
+  & > div > button {
+    &:first-child {
+      margin-right: 200px;
+    }
+    font-size: 1.5rem;
+    padding: 5px 20px;
   }
 }

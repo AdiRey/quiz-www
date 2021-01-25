@@ -2,17 +2,18 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CategoryRestApiService } from '@shared/api-service/category/category.service';
+import { CategoryRestApiService } from '@shared/api-service/category.service';
 import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
 import { CategoryEditModel, CategoryModel } from '@shared/model/category.model';
 import { QuizDataSource } from '@shared/quiz-table.datasource';
 import { CategoryFormComponent } from '../category-form/category-form.component';
 import * as CategoryActions from '../../store/category.actions';
-import { ConfirmModel } from '@shared/model/components/confirm-entry.model';
+import { ActionType, ConfirmModel } from '@shared/model/components/confirm-entry.model';
 import { IdModel } from '@shared/model/components/id.model';
 import { selectLoading } from '../../store/category.selector';
 import { HeaderService } from '@shared/service/header.service';
 import { tap } from 'rxjs/operators';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-category-table',
@@ -26,16 +27,21 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
 
+  public form: FormGroup;
+
   public dataSource = new QuizDataSource<CategoryModel>(this._categoryService);
 
   constructor(
     private readonly _categoryService: CategoryRestApiService,
     private readonly _matDialog: MatDialog,
-    private readonly _headerService: HeaderService
+    private readonly _headerService: HeaderService,
+    private readonly _formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    this.dataSource.loadData();
+    this.form = this._formBuilder.group({
+      name: [null]
+    });
     this._headerService.setAction({
       text: 'Dodaj kategorię',
       icon: 'add',
@@ -44,11 +50,17 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
         data: {
           isEdit: false
         }
-      }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe()
+      }).afterClosed().toPromise().then(data => {
+        if (data != null) {
+          this.dataSource.loadData();
+        }
+      })
     });
+    this.dataSource.loadData();
   }
 
   ngAfterViewInit() {
+    this.dataSource.form = this.form;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sorter = this.matSort;
   }
@@ -60,7 +72,11 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
         isEdit: true,
         content: element
       }
-    }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe();
+    }).afterClosed().toPromise().then(data => {
+      if (data != null) {
+        this.dataSource.loadData();
+      }
+    })
   }
 
   public delete(element: CategoryModel) {
@@ -69,8 +85,13 @@ export class CategoryTableComponent implements OnInit, AfterViewInit {
         message: 'Czy na pewno chcesz usunąć tą kategorię?',
         element: element,
         action: CategoryActions.DELETE_CATEGORY,
+        actionType: ActionType.DELETE,
         loadingSelector: selectLoading
       }
-    }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe();
+    }).afterClosed().toPromise().then(data => {
+      if (data != null) {
+        this.dataSource.loadData();
+      }
+    });
   }
 }

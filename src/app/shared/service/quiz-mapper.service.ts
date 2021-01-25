@@ -8,13 +8,19 @@ export class QuizMapperSerivce {
         delete form['basic'];
         form = {...form, ...basic};
         form['questions'].map(question => {
-            if (question['correctRadio'] != null) {
+            if (question['type'] == 'RADIO') {
+                question['answers'].map(answer => {
+                    answer['correct'] = false;
+                    return answer;
+                });
                 question['answers'][question['correctRadio']]['correct'] = true;
             }
-            question['answers'].filter(f => f['correct'] == null).map(answer => {
-                answer['correct'] = false;
-                return answer;
-            });
+            else {
+                question['answers'].filter(f => f['correct'] == null).map(answer => {
+                    answer['correct'] = false;
+                    return answer;
+                });
+            }
             delete question['correctRadio'];
             return question;
         });
@@ -30,6 +36,8 @@ export class QuizMapperSerivce {
             },
             description: form['description'],
             time: form['time'],
+            isInfinity: form['isInfinity'],
+            approachesCount: form['approachesCount'],
             startDate: form['startDate'] && new Date(form['startDate']),
             endingDate: form['endingDate'] && new Date(form['endingDate'])
         };
@@ -37,6 +45,8 @@ export class QuizMapperSerivce {
         delete form['category'];
         delete form['description'];
         delete form['time'];
+        delete form['isInfinity'];
+        delete form['approachesCount'];
         delete form['startDate'];
         delete form['endingDate'];
         form['questions'] = form['questions'].map(question => {
@@ -50,6 +60,7 @@ export class QuizMapperSerivce {
             })
             return question;
         });
+        console.log(form);
         return form as T;
     }
 }

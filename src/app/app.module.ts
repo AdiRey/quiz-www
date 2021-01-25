@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptor';
 import { PaginatorI18n } from './paginator.i18n';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { rootReducer } from '@shared/root-store';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
     ToastrModule.forRoot({
       positionClass: 'toast-top-right'
     }),
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({root: rootReducer}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 50

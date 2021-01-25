@@ -2,12 +2,14 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from 'rxjs';
 import { catchError, delay, map, mergeMap, switchMap } from "rxjs/operators";
-import { CasSecurityRestApi } from "@shared/api-service/cas-security/cas-security.service";
-import { UserModel, UrlModel } from "@shared/model/auth.model";
+import { CasSecurityRestApi } from "@shared/api-service/cas-security.service";
+import { UrlModel } from "@shared/model/auth.model";
+import { UserModel } from "@shared/model/root.model";
 import * as AuthActions from './auth.actions';
 import * as ToastrActions from '../../shared/store/toast/toastr.actions';
 import { LocalStorage } from "@shared/service/local-storage.service";
 import * as RedirectionActions from '@shared/store/redirection/redirection.actions';
+import * as RootActions from '@shared/root-store/root.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -51,6 +53,7 @@ export class AuthEffect {
                     delay(500),
                     mergeMap(data => [
                         AuthActions.LOAD_TOKEN_SUCCESS(data),
+                        RootActions.SET_USER(data),
                         RedirectionActions.REDIRECT({ url: '/q/quiz' })
                     ]),
                     catchError(error => of(

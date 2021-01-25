@@ -17,7 +17,7 @@ export abstract class AbstractRestApi<M = Object> {
         return this.httpClient
             .get<AbstractResponseArrayModel<T>>(
                 RestBuilder.getUrl(model?.additionalPath? this.path + '/' + model.additionalPath : this.path), {
-                    params: RestBuilder.getParams(model?.pagination)
+                    params: RestBuilder.getParams<M>(model)
                 }
             );
     };

@@ -1,0 +1,36 @@
+<section class="container-fluid">
+    <section class="col-2 tiles">
+        <app-loader [loading]="loadingTiles$ | async">
+            <section *ngIf="(loadingTilesNumber$ | async) == 0">
+                <ngx-charts-number-card
+                    [results]="tiles"
+                    [cardColor]="'#232837'">
+                </ngx-charts-number-card>
+            </section>
+        </app-loader>
+    </section>
+    <section class="col-10 chart-container">
+        <section class="first chart w-100">
+            <app-loader [loading]="loadingChart$ | async">
+                <section *ngIf="loaded" class="w-100 h-100">
+                    <ngx-charts-bar-vertical
+                        [results]="chart.data"
+                        [xAxisLabel]="chart.xAxis"
+                        [yAxisLabel]="chart.yAxis"
+                        [showXAxisLabel]="false"
+                        [showYAxisLabel]="true"
+                        [xAxis]="true"
+                        [yAxis]="true"
+                        [gradient]="true">
+                    </ngx-charts-bar-vertical>
+                </section>
+            </app-loader>
+        </section>
+        <section class="separator"></section>
+        <section class="second">
+            <ngx-charts-pie-grid 
+                [results]="bestCategories">
+            </ngx-charts-pie-grid>
+        </section>
+    </section>
+</section>

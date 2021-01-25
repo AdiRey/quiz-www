@@ -5,6 +5,10 @@ import { NewsRoutingModule } from './news-routing.module';
 import { NewsComponent } from './components/news.component';
 import { NewsViewComponent } from './components/news-view/news-view.component';
 import { SwiperModule } from 'swiper/angular';
+import { StoreModule } from '@ngrx/store';
+import { NewsEffect, newsReducer } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -12,7 +16,10 @@ import { SwiperModule } from 'swiper/angular';
   imports: [
     CommonModule,
     SwiperModule,
-    NewsRoutingModule
+    NewsRoutingModule,
+    SharedModule,
+    StoreModule.forFeature('news', newsReducer),
+    EffectsModule.forFeature([NewsEffect])
   ]
 })
 export class NewsModule { }

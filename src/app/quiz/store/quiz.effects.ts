@@ -1,12 +1,18 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { switchMap, tap, catchError, mergeMap } from "rxjs/operators";
+import { switchMap, tap, catchError, mergeMap, map, withLatestFrom } from "rxjs/operators";
 import * as QuizActions from '../store/quiz.actions';
-import * as ToastrActions from '../../shared/store/toast/toastr.actions';
-import { QuizRestApiService } from '../../shared/api-service/quiz/quiz.service';
+import * as ToastrActions from '@shared/store/toast/toastr.actions';
+import * as RedirectionActions from '@shared/store/redirection/redirection.actions'
+import { QuizRestApiService } from '@shared/api-service/quiz.service';
 import { of } from "rxjs";
-import { QuizModel } from "@shared/model/quiz.model";
+import { QuizApproachesModel, QuizModel, QuizStartModel } from "@shared/model/quiz.model";
 import { MatDialog } from "@angular/material/dialog";
+import { Store } from "@ngrx/store";
+import { AppState } from "@shared/store/app-state";
+import { selectQuizComplete, selectQuizEditData, selectQuizPreview } from "./quiz.selectors";
+import { UserQuizRestApiService } from "@shared/api-service/user-quiz.service";
+import { DialogHandlerService } from "@shared/service/dialog-handler.service";
 
 
 @Injectable({
@@ -17,7 +23,9 @@ export class QuizEffect {
     constructor(
         private readonly _actions$: Actions,
         private readonly _quizService: QuizRestApiService,
-        private readonly _dialogService: MatDialog
+        private readonly _userQuizService: UserQuizRestApiService,
+        private readonly _dialogService: MatDialog,
+        private readonly _store: Store<AppState>
     ) {}
 
 
@@ -31,7 +39,9 @@ export class QuizEffect {
                 }).pipe(
                     mergeMap(() => [
                         QuizActions.SAVE_QUIZ_SUCCESS(),
-                        ToastrActions.SHOW_SUCCESS({ message: 'Quiz pomyślnie zapisany.' })
+                        QuizActions.CLOSE_LAST_OPENED_DIALOG(),
+                        ToastrActions.SHOW_SUCCESS({ message: 'Quiz pomyślnie zapisany.' }),
+                        RedirectionActions.REDIRECT({ url: '/q/quiz' })
                     ]),
                     catchError(error => of(
                         QuizActions.DISCARD_LOADING(),
@@ -65,14 +75,17 @@ export class QuizEffect {
     editQuiz$ = createEffect(() =>
         this._actions$.pipe(
             ofType(QuizActions.EDIT_QUIZ),
-            switchMap(res =>
+            withLatestFrom(this._store.select(selectQuizEditData)),
+            switchMap(([res, editData]) =>
                 this._quizService.update<null>({
-                    additionalPath: `details/${res.id}`,
+                    additionalPath: `update/${editData.id}`,
                     body: res
                 }).pipe(
                     mergeMap(() => [
                         QuizActions.EDIT_QUIZ_SUCCESS(),
-                        ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie edytowano quiz.' })
+                        QuizActions.CLOSE_LAST_OPENED_DIALOG(),
+                        ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie edytowano quiz.' }),
+                        RedirectionActions.REDIRECT({ url: '/q/quiz' })
                     ]),
                     catchError(error => of(
                         QuizActions.DISCARD_LOADING(),
@@ -92,7 +105,7 @@ export class QuizEffect {
                 }).pipe(
                     mergeMap(() => [
                         QuizActions.DELETE_QUIZ_SUCCESS(),
-                        QuizActions.CLOSE_ALL_DIALOGS(),
+                        QuizActions.CLOSE_LAST_OPENED_DIALOG(),
                         ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie usunięto quiz.' })
                     ]),
                     catchError(error => of(
@@ -102,6 +115,103 @@ export class QuizEffect {
                 )
             )
         )
+    );
+
+    startQuizPreview$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.START_QUIZ_PREVIEW),
+            map(res => RedirectionActions.REDIRECT({ url: `/q/quiz/preview/${res.id}` }))
+        )
+    );
+
+    loadPreviewQuiz$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.LOAD_QUIZ_PREVIEW),
+            switchMap((res) => {
+                return this._quizService.get<any>({
+                        additionalPath: `preview/${res.id}`
+                    }).pipe(
+                        mergeMap(data => [QuizActions.SET_QUIZ_PREVIEW(data), ToastrActions.SHOW_SUCCESS({ message: 'Poprawnie załadowano quiz' })]),
+                        catchError(error => of(
+                            ToastrActions.SHOW_ERROR({ message: error }),
+                            QuizActions.DISCARD_LOADING()
+                        ))
+                    )
+            })
+        )
+    );
+
+    loadQuizApproaches$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.LOAD_QUIZ_APPROACHES),
+            switchMap(res =>
+                this._userQuizService.get<QuizApproachesModel>({
+                    additionalPath: `quiz/${res.id}/approaches-count`
+                }).pipe(
+                    map(data => QuizActions.LOAD_QUIZ_APPROACHES_SUCCESS(data)),
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error }),
+                        QuizActions.DISCARD_APPROACHES_LOADING()
+                    ))
+                )
+            )
+        )
+    );
+
+    startQuizComplete$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.START_QUIZ_COMPLETE),
+            map(res => RedirectionActions.REDIRECT({ url: `/q/quiz/completing/${res.id}` }))
+        )
+    );
+
+    loadQuizComplete$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.LOAD_QUIZ_COMPLETE),
+            switchMap(res =>
+                this._quizService.save<QuizStartModel>({
+                    additionalPath: `${res.id}/start`
+                }).pipe(
+                    mergeMap(data => [
+                        QuizActions.LOAD_QUIZ_COMPLETE_SUCCESS(data),
+                        ToastrActions.SHOW_SUCCESS({ message: 'Rozpoczęto quiz' })
+                    ]),
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error}),
+                        QuizActions.DISCARD_QUIZ_COMPLETE_LOADING()
+                    ))
+                )
+            )
+        )
+    );
+
+    saveUserQuizComplete$ = createEffect(() =>
+    this._actions$.pipe(
+        ofType(QuizActions.SAVE_USER_QUIZ_COMPLETE),
+        withLatestFrom(this._store.select(selectQuizComplete)),
+        switchMap(([res, quiz]) =>
+            this._quizService.save<null>({
+                additionalPath: `${quiz.id}/stop`,
+                body: res.array
+            }).pipe(
+                mergeMap(() => [
+                    QuizActions.SAVE_USER_QUIZ_COMPLETE_SUCCESS(),
+                    ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie ukończono quiz.' })
+                ]),
+                catchError(error => of(
+                    ToastrActions.SHOW_ERROR({ message: error }),
+                    QuizActions.DISCARD_QUIZ_COMPLETE_LOADING()
+                ))
+            )
+        )
+    )
+    );
+
+    closeLastDialog$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.CLOSE_LAST_OPENED_DIALOG),
+            tap(() => DialogHandlerService.closeDialog())
+        ), { dispatch: false }
     );
 
     closeDialogs$ = createEffect(() =>

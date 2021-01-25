@@ -10,7 +10,9 @@
                   <mat-label>Nazwa quizu</mat-label>
                   <input matInput #quizName formControlName="title" maxlength="50">
                   <mat-hint align="end">{{quizName.value?.length || 0}}/50</mat-hint>
-                  <mat-error *ngIf="basic['controls']['title'].invalid">Nazwa jest wymagana.</mat-error>
+                  <mat-error *ngIf="basic['controls']['title'].invalid">
+                    Nazwa jest wymagana.
+                  </mat-error>
                 </mat-form-field>
 
                 <div formGroupName="category">
@@ -41,6 +43,19 @@
                   <span matSuffix>
                     minut
                   </span>
+                  <mat-error *ngIf="basic['controls']['time'].invalid">
+                    Minimalna wartość wynosi 0.
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-checkbox #approaches formControlName="isInfinity">Nielimitowana ilość podejść</mat-checkbox>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>Ilość podejść</mat-label>
+                  <input matInput formControlName="approachesCount" type="number" [readonly]="approaches.checked">
+                  <mat-error *ngIf="basic['controls']['approachesCount'].invalid">
+                    Minimalna wartość wynosi 0.
+                  </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
@@ -52,17 +67,23 @@
                     [showSeconds]="true"
                     [touchUi]="true">
                   </ngx-mat-datetime-picker>
+                  <mat-error *ngIf="basic['controls']['startDate'].invalid">
+                    Błędna data.
+                  </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                   <mat-label>Data zakończenia quizu</mat-label>
-                  <input matInput formControlName="endingDate" [ngxMatDatetimePicker]="endingPicker" [min]="minDate">
+                  <input matInput formControlName="endingDate" [ngxMatDatetimePicker]="endingPicker" [min]="getEndMinDate()">
                   <mat-datepicker-toggle matSuffix [for]="endingPicker"></mat-datepicker-toggle>
                   <ngx-mat-datetime-picker
                     #endingPicker
                     [showSeconds]="true"
                     [touchUi]="true">
                   </ngx-mat-datetime-picker>
+                  <mat-error *ngIf="basic['controls']['endingDate'].invalid">
+                    Błędna data.
+                  </mat-error>
                 </mat-form-field>
 
                 <div class="ml-auto">
@@ -73,7 +94,7 @@
             </form>
         </mat-step>
 
-        <mat-step>
+        <mat-step [optional]="true">
             <form [formGroup]="form" class="form">
               <ng-template matStepLabel>Obrazek</ng-template>
               <section class="form__image-section">
@@ -88,7 +109,7 @@
                       onCreate
                       (onCreateEvent)="setImg('img')"
                       (change)="change(img, 'img')"/>
-                      <button mat-mini-fab (click)="clearImage(img, 'img')" class="trash-button" title="Usuń obrazek">
+                      <button mat-mini-fab (click)="clearImage('img')" class="trash-button" title="Usuń obrazek">
                         <mat-icon>delete</mat-icon>
                       </button>
                     <img id="img" width="600px" height="400px"/>
@@ -103,7 +124,7 @@
             </form>
         </mat-step>
 
-        <mat-step [stepControl]="form.controls['questions']" errorMessage="Błędy w pytaniach">
+        <mat-step [stepControl]="form.controls['questions']" errorMessage="Błędy w pytaniach" *ngIf="!isEdit">
             <form [formGroup]="form" class="form">
                 <ng-template matStepLabel>Pytania</ng-template>
                 <div formArrayName="questions" class="w-100 d-flex flex-column">
@@ -133,7 +154,7 @@
                         onCreate
                         (onCreateEvent)="setImg('q' + questionId)"
                         (change)="change(img, 'q' + questionId)"/>
-                        <button mat-mini-fab (click)="clearImage(img, 'q' + questionId)" class="trash-button" title="Usuń obrazek">
+                        <button mat-mini-fab (click)="clearImage('q' + questionId)" class="trash-button" title="Usuń obrazek">
                           <mat-icon>delete</mat-icon>
                         </button>
                       <img [id]="'q' + questionId" width="300px" height="200px"/>
@@ -199,12 +220,22 @@
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Zakończone</ng-template>
-            <h2>Gratulacje!</h2>
-            <p>Przeszedłeś pomyślnie przez etap tworzenia quizu. Czy chcesz go zapisać?</p>
-            <div>
-              <button mat-raised-button (click)="stepper.reset()" class="mr-5">Anuluj</button>
-              <button mat-raised-button color="accent" (click)="save()" [disabled]="!form.valid">Zapisz</button>
-            </div>
+            <section class="end-view">
+              <h2>Gratulacje!</h2>
+              <p>
+                {{
+                  isEdit?
+                  'Przeszedłeś pomyślnie przez etap edycji quizu. Czy chcesz go zapisać?' :
+                  'Przeszedłeś pomyślnie przez etap tworzenia quizu. Czy chcesz go zapisać?'
+                }}
+              </p>
+              <div>
+                <button mat-raised-button (click)="cancel()">Anuluj</button>
+                <button mat-raised-button color="accent" (click)="save()" [disabled]="!form.valid">
+                  {{ isEdit ? 'Zapisz' : 'Utwórz'}}
+                </button>
+              </div>
+            </section>
         </mat-step>
     </mat-horizontal-stepper>
     </app-loader>

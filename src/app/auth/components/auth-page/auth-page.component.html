@@ -3,19 +3,34 @@
         <div class="img-container__nav--image">
             <app-logo></app-logo>
         </div>
-        <div class="img-container__nav--options">
-            <div>
-                Język
+        <div *ngIf="(user$ | async)?.firstName; else notLoggedIn" class="img-container__nav--options">
+            <div *ngIf="user$ | async as user">
+                {{ user.firstName + ' ' + user.lastName }}
             </div>
-            <button class="login-button" mat-raised-button color="primary" (click)="loginRoute()">
-                Zaloguj
-            </button>
         </div>
+        <ng-template #notLoggedIn>
+            <div class="img-container__nav--options">
+                <div>
+                    Język
+                </div>
+                <button class="login-button" mat-raised-button color="primary" (click)="loginRoute()">
+                    Zaloguj
+                </button>
+            </div>
+        </ng-template>
     </nav>
     <section class="img-container__section">
-        <div class="d-flex flex-column align-items-center justify-content-around">
+        <div class="text-section d-flex flex-column align-items-center justify-content-around">
             <h1 class="img-container__section--h1">quiz pro</h1>
             <span class="img-container__section--span">Przetestuj swoje możliwości</span>
+            <button
+                *ngIf="(user$ | async)?.firstName"
+                mat-raised-button
+                color="accent"
+                class="main-button"
+                (click)="goToDashboard()">
+                Przejdź do strony głównej
+            </button>
         </div>
     </section>
     <footer class="img-container__footer container-fluid d-flex flex-column justify-content-around">
@@ -29,6 +44,6 @@
         </div>
     </footer>
     <section class="loader" *ngIf="(loading$ | async) && click">
-        <mat-spinner diameter="300" color="accent"></mat-spinner>
+        <mat-spinner diameter="200" color="accent"></mat-spinner>
     </section>
 </section>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { QuizRoutingModule } from './quiz-routing.module';
 import { QuizComponent } from './components/quiz.component';
 import { QuizFormComponent } from './components/quiz-form/quiz-form.component';
-import { QuizViewsComponent } from './components/quiz-table/quiz-table.component';
+import { QuizTableComponent } from './components/quiz-table/quiz-table.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,15 +26,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
-import { QuizIntermediateComponent } from './components/quiz-intermediate/quiz-intermediate.component';
+import { QuizPreviewComponent } from './components/quiz-preview/quiz-preview.component';
 import { registerLocaleData } from '@angular/common'
 import localePl from '@angular/common/locales/pl';
+import { QuizCompletingComponent } from './components/quiz-completing/quiz-completing.component';
 
 registerLocaleData(localePl);
 
 
 @NgModule({
-  declarations: [QuizComponent, QuizFormComponent, QuizViewsComponent, QuizIntermediateComponent],
+  declarations: [QuizComponent, QuizFormComponent, QuizTableComponent, QuizPreviewComponent, QuizCompletingComponent],
   imports: [
     CommonModule,
     QuizRoutingModule,
@@ -64,7 +65,6 @@ registerLocaleData(localePl);
   providers: [
     MatDatepickerModule,
     { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
-    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true, displayDefaultIndicatorType: false }},
     { provide: LOCALE_ID, useValue: 'pl-PL' }
   ]
 })

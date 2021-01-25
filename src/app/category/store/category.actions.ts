@@ -12,6 +12,7 @@ export const EDIT_CATEGORY_SUCCESS = createAction('[category] EDIT_CATEGORY_SUCC
 export const DELETE_CATEGORY = createAction('[category] DELETE_CATEGORY', props<{ id: number | string }>());
 export const DELETE_CATEGORY_SUCCESS = createAction('[category] DELETE_CATEGORY_SUCCESS');
 
-export const DISCARD_LOADING = createAction('[category] DISCARD_LOADING');
-
 export const CLOSE_ALL_DIALOGS = createAction('[category] CLOSE_ALL_DIALOGS');
+export const CLOSE_LAST_OPENED_DIALOG = createAction('[category] CLOSE_LAST_OPENED_DIALOG');
+
+export const DISCARD_LOADING = createAction('[category] DISCARD_LOADING');

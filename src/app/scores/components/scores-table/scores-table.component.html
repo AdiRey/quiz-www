@@ -1,0 +1,43 @@
+<section class="table-wrapper">
+    <section class="form-in-table-wrapper">
+        <form [formGroup]="form">
+            <mat-form-field>
+                <mat-label>Wybierz kategorię</mat-label>
+                <mat-select formControlName="categoryId">
+                  <mat-option *ngFor="let category of categories" [value]="category.id">
+                    {{ category.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </form>
+    </section>
+    <mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="quizId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-4">Id quizu</mat-header-cell>
+            <td *matCellDef="let element" class="col-4">{{ element.quiz.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-4">Tytuł quizu</mat-header-cell>
+            <td *matCellDef="let element" class="col-4">{{ element.quiz.title }}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="createDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-4">Data przystąpienia</mat-header-cell>
+            <td *matCellDef="let element" class="col-4">{{ element.createDate | common:'emptyDate' }}</td>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+    </mat-table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        [pageSize]="20"
+        showFirstLastButtons>
+    </mat-paginator>
+    <section class="mat-spinner-wrapper" *ngIf="dataSource.loading$ | async">
+        <mat-spinner diameter="100" color="accent"></mat-spinner>
+    </section>
+</section>

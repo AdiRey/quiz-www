@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { UrlModel, UserModel, UUIDModel } from "@shared/model/auth.model";
+import { UrlModel, UUIDModel } from "@shared/model/auth.model";
+import { UserModel } from "@shared/model/root.model";
 
 export const LOAD_CAS_URL = createAction('[auth] LOAD_CAS_URL');
 export const LOAD_CAS_URL_SUCCESS = createAction('[auth] LOAD_CAS_URL_SUCCESS', props<UrlModel>());

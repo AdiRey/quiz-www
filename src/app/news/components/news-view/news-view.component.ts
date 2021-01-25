@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { NewsModel } from '@shared/model/news.model';
+import { AppState } from '@shared/store/app-state';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import SwiperCore, { Virtual, Navigation, Pagination } from 'swiper/core';
+import { selectNewsData, selectNewsLoading } from '../../store';
+import * as NewsActions from '../../store/news.actions';
 
 SwiperCore.use([Virtual, Pagination, Navigation]);
 
@@ -23,227 +31,22 @@ export class NewsViewComponent implements OnInit {
     revEl: '.swiper-button-prev'
   };
 
-  constructor() { }
+  public defaultImage: string = '../../../../assets/images/quiz-default.jpg';
+
+  public news$: Observable<Array<NewsModel>> = this._store.select(selectNewsData).pipe(filter(f => f != null));
+  public loading$: Observable<boolean> = this._store.select(selectNewsLoading);
+
+  constructor(
+    private readonly _store: Store<AppState>,
+    private readonly _router: Router
+  ) { }
 
   ngOnInit(): void {
+    this._store.dispatch(NewsActions.LOAD_CATEGORIES());
   }
 
-  categoryList = [
-    {
-      name: 'java',
-      content: [
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2',
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2',
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2',
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        },
-        {
-          title: 'Spring Quiz',
-          img: 'xd1',
-          description: 'hahaha1'
-        },
-        {
-          title: 'J2EE Quiz',
-          img: 'xd2', 
-          description: 'hahaha2'
-        },
-        {
-          title: 'Spark Quiz',
-          img: 'xd3',
-          description: 'hahaha3'
-        }
-      ]
-    },
-    {
-      name: 'typescript',
-      content: [
-        {
-          title: 'Angular Quiz',
-          img: 'xdd1',
-          description: 'hahaha11'
-        },
-        {
-          title: 'React Quiz',
-          img: 'xdd2',
-          description: 'hahaha22'
-        }
-      ]
-    }
-  ];
+  goToQuiz(quizId: number) {
+    this._router.navigate([`/q/quiz/preview/${quizId}`]);
+  }
 
 }

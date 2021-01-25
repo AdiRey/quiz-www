@@ -1,8 +1,9 @@
 import { DataSource } from "@angular/cdk/table";
+import { FormGroup } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { catchError, finalize } from "rxjs/operators";
+import { catchError, debounceTime, distinctUntilChanged, finalize } from "rxjs/operators";
 import { PaginationModel } from "./abstract-rest-api.model";
 import { AbstractRestApi } from "./abstract-rest-api.service";
 
@@ -14,8 +15,10 @@ export class QuizDataSource<T = any> implements DataSource<T> {
     private _loading$$ = new BehaviorSubject<boolean>(false);
     private _data$$ = new BehaviorSubject<Array<T>>([]);
 
+    // filters
     private _paginator: MatPaginator;
     private _sorter: MatSort;
+    private _form: FormGroup;
 
     private _additionalPath: string = 'list';
 
@@ -24,6 +27,32 @@ export class QuizDataSource<T = any> implements DataSource<T> {
 
     get data() {
         return this._dataTable || [];
+    }
+
+    set form(form: FormGroup) {
+        if (this._form == form) {
+            return;
+        }
+        this._form = form;
+        this._innerSubs.push(
+            this._form.valueChanges.pipe(
+                distinctUntilChanged(),
+                debounceTime(1000)
+                ).subscribe(
+                data => {
+                    this.loadData({
+                        additionalPath: this._additionalPath,
+                        pagination: {
+                            direction: (this._sorter && this._sorter.direction) ? this._sorter.direction.toString() : 'asc',
+                            orderBy: (this._sorter && this._sorter.active) ? this._sorter.active : 'id',
+                            page: '0',
+                            size: this._paginator? String(this._paginator.pageSize) : '20'
+                        },
+                        params: data
+                    });
+                }
+            )
+        )
     }
 
     set paginator(paginator: MatPaginator) {
@@ -63,7 +92,7 @@ export class QuizDataSource<T = any> implements DataSource<T> {
                             direction: this._sorter.direction.toString() !== ''? this._sorter.direction.toString() : 'asc',
                             orderBy: this._sorter.active,
                             page: '0',
-                            size: this._paginator? String(this._paginator.pageSize) : '10'
+                            size: this._paginator? String(this._paginator.pageSize) : '20'
                         }
                     });
                 }
@@ -76,9 +105,9 @@ export class QuizDataSource<T = any> implements DataSource<T> {
         private readonly _apiService: AbstractRestApi<T>
     ) {}
 
-    public setPathAndLoad(additionalPath: string, paginationModel?: PaginationModel<T>) {
+    public setPathAndLoad(additionalPath: string) {
         this._additionalPath = additionalPath;
-        this.loadData(paginationModel);
+        this.loadData();
     }
 
     public loadData(

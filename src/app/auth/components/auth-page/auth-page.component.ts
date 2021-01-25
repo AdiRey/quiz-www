@@ -7,6 +7,8 @@ import { MessageContainerComponent } from '@shared/components/message-container/
 import { AppState } from '@shared/store/app-state';
 import { selectLoading, selectUrl } from '../../store';
 import * as AuthActions from '../../store/auth.actions';
+import { selectRootUser } from '@shared/root-store/root.selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-page',
@@ -20,9 +22,12 @@ export class AuthPageComponent implements OnInit {
   public loading$: Observable<boolean> = this._store.select(selectLoading);
   public click: boolean = false;
 
+  public user$ = this._store.select(selectRootUser);
+
   constructor(
     private readonly  _matDialog: MatDialog,
-    private readonly _store: Store<AppState>
+    private readonly _store: Store<AppState>,
+    private readonly _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +57,10 @@ export class AuthPageComponent implements OnInit {
         this.click = false;
       }
     }, 100);
+  }
+
+  public goToDashboard() {
+    this._router.navigate(['/q']);
   }
 
   ngOnDestroy() {

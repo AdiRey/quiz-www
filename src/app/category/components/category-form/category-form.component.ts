@@ -2,8 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { CategoryRestApiService } from '@shared/api-service/category/category.service';
+import { CategoryRestApiService } from '@shared/api-service/category.service';
 import { CategoryEditModel } from '@shared/model/category.model';
+import { DialogHandlerService } from '@shared/service/dialog-handler.service';
 import { AppState } from '@shared/store/app-state';
 import { Observable } from 'rxjs';
 import * as CategoryActions from '../../store/category.actions';
@@ -27,6 +28,7 @@ export class CategoryFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    DialogHandlerService.setDialogRef(this._dialogRef);
     this.form = this._formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2)]]
     });

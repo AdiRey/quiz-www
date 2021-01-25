@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OnCreateDirective } from './directives/on-create.directive';
 import { ImageContainerComponent } from './components/image-container/image-container.component';
+import { CommonPipe } from './pipe/common.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,9 @@ import { ImageContainerComponent } from './components/image-container/image-cont
     FormWrapperComponent,
     LoaderComponent,
     OnCreateDirective,
-    ImageContainerComponent],
+    ImageContainerComponent,
+    CommonPipe
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild([]),
@@ -34,7 +37,14 @@ import { ImageContainerComponent } from './components/image-container/image-cont
     EffectsModule.forFeature([NotificationEffect, RedirectionEffect])
   ],
   providers: [HasTokenGuard],
-  exports: [LogoComponent, ConfirmEntryComponent, FormWrapperComponent, LoaderComponent, OnCreateDirective],
+  exports: [
+    LogoComponent,
+    ConfirmEntryComponent,
+    FormWrapperComponent,
+    LoaderComponent,
+    OnCreateDirective,
+    CommonPipe
+  ],
   entryComponents: [ConfirmEntryComponent]
 })
 export class SharedModule { }

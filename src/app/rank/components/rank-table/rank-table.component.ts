@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CategoryRestApiService } from '@shared/api-service/category/category.service';
+import { CategoryRestApiService } from '@shared/api-service/category.service';
 import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
 import { CategoryModel, CategoryEditModel } from '@shared/model/category.model';
 import { ConfirmModel } from '@shared/model/components/confirm-entry.model';

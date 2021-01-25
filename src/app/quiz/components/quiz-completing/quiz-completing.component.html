@@ -1,0 +1,49 @@
+<app-loader [loading]="loading$ | async">
+    <form>
+        <mat-horizontal-stepper *ngIf="quizComplete$ | async as quizComplete">
+            <mat-step *ngFor="let question of quizComplete.questions; let last = last">
+                <section class="d-flex flex-column align-items-start justify-content-around question">
+                    <h1> Polecenie: {{ question.content }} </h1>
+                    <img *ngIf="question.image" width="600px" height="300px" [src]="question.image"/>
+                    <section class="pt-5 answers">
+                        <span class="command">
+                            Odpowiedzi:
+                        </span>
+                        <div *ngIf="question.type === 'CHECKBOX'; else radio" class="d-flex flex-column pt-3">
+                            <mat-checkbox #qC
+                                *ngFor="let answer of question.answers"
+                                class="answer"
+                                (click)="setAnswerToQuestionCheckbox(question.id, answer.id, qC.checked)">
+                                {{ answer.content }}
+                            </mat-checkbox>
+                        </div>
+                        <ng-template #radio>
+                            <mat-radio-group (change)="setAnswerToQuestionRadio(question.id, $event.value)" class="d-flex flex-column pt-3 answer">
+                                <mat-radio-button
+                                        *ngFor="let answer of question.answers"
+                                        [value]="answer.id">
+                                        {{ answer.content }}
+                                    </mat-radio-button>
+                            </mat-radio-group>
+                        </ng-template>
+                    </section>
+                    <section class="w-100 d-flex justify-content-between pt-5">
+                        <button mat-raised-button color="primary">Poprzednie</button>
+                        <button mat-raised-button color="accent">Następne</button>
+                    </section>
+                    <section *ngIf="last">
+                        <button mat-raised-button (click)="save()">Zakończ quiz</button>
+                    </section>
+                    <section class="timer">
+                        <span>
+                            Pozostało czasu:
+                        </span>
+                        <span>
+                            {{ timer }}
+                        </span>
+                    </section>
+                </section>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </form>
+</app-loader>

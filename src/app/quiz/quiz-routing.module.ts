@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { QuizCompletingComponent } from './components/quiz-completing/quiz-completing.component';
 import { QuizFormComponent } from './components/quiz-form/quiz-form.component';
-import { QuizIntermediateComponent } from './components/quiz-intermediate/quiz-intermediate.component';
-import { QuizViewsComponent } from './components/quiz-table/quiz-table.component';
+import { QuizPreviewComponent } from './components/quiz-preview/quiz-preview.component';
+import { QuizTableComponent } from './components/quiz-table/quiz-table.component';
 import { QuizComponent } from './components/quiz.component';
 
 const routes: Routes = [
@@ -12,12 +13,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'views',
+        redirectTo: 'table',
         pathMatch: 'full'
       },
       {
-        path: 'views',
-        component: QuizViewsComponent
+        path: 'table',
+        component: QuizTableComponent
       },
       {
         path: 'add-quiz',
@@ -28,8 +29,12 @@ const routes: Routes = [
         component: QuizFormComponent
       },
       {
-        path: 'intermediate/:quizId',
-        component: QuizIntermediateComponent
+        path: 'preview/:quizId',
+        component: QuizPreviewComponent
+      },
+      {
+        path: 'completing/:quizId',
+        component: QuizCompletingComponent
       }
     ]
   }

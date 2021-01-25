@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterEvent } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { HeaderService } from '@shared/service/header.service';
+import { LocalStorage } from '@shared/service/local-storage.service';
+import { AppState } from '@shared/store/app-state';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, skip, tap } from 'rxjs/operators';
+import * as RootActions from '@shared/root-store/root.actions';
+import { selectRootUser } from '@shared/root-store/root.selectors';
 
 @Component({
   selector: 'app-layout',
@@ -14,6 +19,8 @@ export class LayoutComponent implements OnInit {
   public opened: boolean = true;
 
   public header$ = this._headerService.getAction();
+
+  public user$ = this._store.select(selectRootUser).pipe(filter(f => f != null));
 
   public currentLink$: Observable<string>;
   public itemsObj = {};
@@ -53,7 +60,8 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private readonly _router: Router,
-    private readonly _headerService: HeaderService
+    private readonly _headerService: HeaderService,
+    private readonly _store: Store<AppState>
   ) {
     this._router.events.pipe(
       filter(f => f instanceof NavigationEnd),
@@ -66,6 +74,12 @@ export class LayoutComponent implements OnInit {
     for (let i of this.items) {
       this.itemsObj[i.route] = { content: i.content, icon: i.icon };
     }
+  }
+
+  public logout() {
+    this._store.dispatch(RootActions.CLEAR_USER());
+    LocalStorage.clearAuth();
+    this._router.navigate(['/auth']);
   }
 
 }

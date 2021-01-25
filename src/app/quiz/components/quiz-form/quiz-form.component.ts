@@ -1,22 +1,29 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { QuizMapperSerivce } from '@shared/service/quiz-mapper.service';
 import { AppState } from '@shared/store/app-state';
 import * as QuizActions from '../../store/quiz.actions';
 import { QuizModel } from '../../../shared/model/quiz.model';
-import { CategoryRestApiService } from '@shared/api-service/category/category.service';
+import { CategoryRestApiService } from '@shared/api-service/category.service';
 import { CategoryModel } from '@shared/model/category.model';
 import * as ToastrActions from '@shared/store/toast/toastr.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { selectQuizEditData, selectQuizLoading } from '../../store';
 import { filter } from 'rxjs/operators';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
+import { ActionType, ConfirmModel } from '@shared/model/components/confirm-entry.model';
 
 @Component({
   selector: 'app-quiz-form',
   templateUrl: './quiz-form.component.html',
-  styleUrls: ['./quiz-form.component.scss']
+  styleUrls: ['./quiz-form.component.scss'],
+  providers: [
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true, displayDefaultIndicatorType: false }}
+  ]
 })
 export class QuizFormComponent implements OnInit, OnDestroy {
 
@@ -37,7 +44,9 @@ export class QuizFormComponent implements OnInit, OnDestroy {
     private readonly _store: Store<AppState>,
     private readonly _categoryService: CategoryRestApiService,
     private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _cdr: ChangeDetectorRef,
+    private readonly _matDialog: MatDialog
     ) {}
 
 
@@ -56,8 +65,10 @@ export class QuizFormComponent implements OnInit, OnDestroy {
         }),
         description: [null],
         time: [null, [Validators.min(0)]],
-        startDate: [null],
-        endingDate: [null],
+        isInfinity: [true],
+        approachesCount: [null, Validators.min(1)],
+        startDate: [null, Validators.required],
+        endingDate: [null, Validators.required],
       }),
       image: [null],
       questions: this._formBuilder.array([])
@@ -69,14 +80,20 @@ export class QuizFormComponent implements OnInit, OnDestroy {
         data => {
           this._setter(data);
           this.form.patchValue(QuizMapperSerivce.fromOutputToFormFormat(data));
+          this._cdr.detectChanges();
           this.isLoaded = true;
         }
       ));
     }
   }
 
+  public getEndMinDate() {
+    return this.form.controls['basic'].get('startDate').value || this.minDate;
+  }
+
   ngOnDestroy() {
     this._subs.forEach(sub => sub.unsubscribe());
+    this._store.dispatch(QuizActions.CLEAR_EDIT_DATA());
   }
 
   private _setter(quiz: QuizModel) {
@@ -138,7 +155,7 @@ export class QuizFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public clearImage(img: any, name: string) {
+  public clearImage(name: string) {
     document.getElementById(name)['src'] = null;
     if (name.startsWith('q')) {
       (this.form.get('questions') as FormArray).controls[Number(name.substring(1))].get('image').setValue(null);
@@ -148,7 +165,6 @@ export class QuizFormComponent implements OnInit, OnDestroy {
   }
 
   public setImg(hook: string) {
-    console.log(this.form.value);
     let interval; // TODO think about deleting interval
     if (hook.startsWith('q') && (this.form.get('questions') as FormArray).controls[Number(hook.substring(1))].get('image').value) {
       interval = setInterval(() => {
@@ -157,7 +173,7 @@ export class QuizFormComponent implements OnInit, OnDestroy {
           clearInterval(interval);
         }
       });
-    } else if (this.form.get('image').value) {
+    } else if (hook === 'img' && this.form.get('image').value) {
       interval = setInterval(() => {
         if (document.getElementById(hook)) {
           document.getElementById(hook).setAttribute('src', this.form.get('image').value);
@@ -184,9 +200,34 @@ export class QuizFormComponent implements OnInit, OnDestroy {
   }
 
   public save() {
-    this._store.dispatch(
-      QuizActions[this.isEdit? 'EDIT_QUIZ' : 'SAVE_QUIZ'](QuizMapperSerivce.fromFormToOutputFormat<QuizModel>(this.form.value))
-    );
+    const action = this.isEdit ? QuizActions.EDIT_QUIZ : QuizActions.SAVE_QUIZ;
+    const message = 'Czy na pewno chcesz ' + (this.isEdit? 'zapisać' : 'edytować') + ' quiz?'
+    this._matDialog.open<ConfirmEntryComponent, ConfirmModel<QuizModel, QuizModel>>(ConfirmEntryComponent, {
+      width: '750px',
+      height: '230px',
+      data: {
+        actionType: ActionType.SAVE,
+        action: action,
+        element: QuizMapperSerivce.fromFormToOutputFormat<QuizModel>(this.form.value),
+        loadingSelector: selectQuizLoading,
+        message: message
+      }
+    });
+  }
+
+  public cancel() {
+    this._matDialog.open<ConfirmEntryComponent, Partial<ConfirmModel<QuizModel, any>>>(ConfirmEntryComponent, {
+      width: '750px',
+      height: '280px',
+      data: {
+        actionType: ActionType.CONFIRM,
+        message: 'Czy na pewno chcesz anulować tworzenie quizu? Pamiętaj, że wszelkie ustawienia bezpowrtownie przepadną.'
+      }
+    }).afterClosed().toPromise().then(data => {
+      if (data === 'confirm') {
+        this._router.navigate(['/q/quiz']);
+      }
+    })
   }
 
 

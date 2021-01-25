@@ -1,4 +1,4 @@
-import { UserModel } from "../model/auth.model";
+import { UserModel } from "../model/root.model";
 
 export class LocalStorage {
 
