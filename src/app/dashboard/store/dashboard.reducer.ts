@@ -41,12 +41,16 @@ const _dashboardReducer = createReducer(
     on(DashboardActions.LOAD_CHART, state => ({ ...state, loadingChart: true })),
     on(DashboardActions.LOAD_CHART_SUCCESS, (state, res) => ({ ...state, chart: { content: res.content }, loadingChart: false })),
 
+    on(DashboardActions.LOAD_CATEGORIES_COUNT, state => ({ ...state, categoryQuizLoading: true })),
+    on(DashboardActions.LOAD_CATEGORIES_COUNT_SUCCESS, (state, res) => ({ ...state, categoryQuizCount: { content: res.content }, categoryQuizLoading: false })),
+
     on(DashboardActions.CLEAR_CHART, state => ({ ...state, chart: null })),
     on(DashboardActions.CLEAR_TILES, state => ({ ...state, categoryCount: null, quizCount: null, userCount: null, activeCount: null })),
 
 
     on(DashboardActions.DISCARD_CHART_LOADING, state => ({ ...state, loadingChart: false })),
-    on(DashboardActions.DISCARD_TILES_LOADING, state => ({ ...state, countTileLoadingNumber: 0 }))
+    on(DashboardActions.DISCARD_TILES_LOADING, state => ({ ...state, countTileLoadingNumber: 0 })),
+    on(DashboardActions.DISCARD_TILES_LOADING, state => ({ ...state, categoryQuizLoading: false }))
 )
 
 

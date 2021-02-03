@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperIntl, MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE  } from '@angular/material/core';
@@ -27,12 +27,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { QuizPreviewComponent } from './components/quiz-preview/quiz-preview.component';
-import { registerLocaleData } from '@angular/common'
-import localePl from '@angular/common/locales/pl';
 import { QuizCompletingComponent } from './components/quiz-completing/quiz-completing.component';
 
-registerLocaleData(localePl);
 
+function getStepperIntl() {
+  let stepper = new MatStepperIntl();
+  stepper.optionalLabel = 'Opcjonalne';
+  return stepper;
+}
 
 @NgModule({
   declarations: [QuizComponent, QuizFormComponent, QuizTableComponent, QuizPreviewComponent, QuizCompletingComponent],
@@ -64,8 +66,10 @@ registerLocaleData(localePl);
   ],
   providers: [
     MatDatepickerModule,
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
-    { provide: LOCALE_ID, useValue: 'pl-PL' }
+    {
+      provide: MatStepperIntl,
+      useFactory: () => getStepperIntl()
+    }
   ]
 })
 export class QuizModule { }

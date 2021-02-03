@@ -27,9 +27,9 @@
     </mat-sidenav>
     <mat-sidenav-content>
       <section class="breadrumbs">
-        <span>
-          <mat-icon>video_label</mat-icon>
-          <span>Strona Główna</span>
+        <span *ngIf="active" class="breadcrumb-header">
+          <mat-icon>{{ active.icon }}</mat-icon>
+          <span>{{ active.content }}</span>
         </span>
         <div *ngIf="header$ | async as header">
           <button mat-raised-button color="accent" (click)="header.action()">

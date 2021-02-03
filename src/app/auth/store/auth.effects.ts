@@ -50,11 +50,11 @@ export class AuthEffect {
                         delete data.token;
                         return data;
                     }),
-                    delay(500),
+                    delay(3000),
                     mergeMap(data => [
-                        AuthActions.LOAD_TOKEN_SUCCESS(data),
+                        RedirectionActions.REDIRECT({ url: '/q/dashboard' }),
                         RootActions.SET_USER(data),
-                        RedirectionActions.REDIRECT({ url: '/q/quiz' })
+                        AuthActions.EXTEND_LOADER()
                     ]),
                     catchError(error => of(
                         ToastrActions.SHOW_ERROR({ message: error }),
@@ -63,5 +63,13 @@ export class AuthEffect {
                 )
             )
         )
-    )
+    );
+
+    extendLoader$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(AuthActions.EXTEND_LOADER),
+            delay(1000),
+            switchMap(() => of(AuthActions.DISCARD_LOADING()))
+        )
+    );
 }

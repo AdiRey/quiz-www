@@ -15,8 +15,12 @@ export const LOAD_TILE_ACTIVE_COUNT_SUCCESS = createAction('[dashboard] LOAD_TIL
 export const LOAD_CHART = createAction('[dashboard] LOAD_CHART');
 export const LOAD_CHART_SUCCESS = createAction('[dashboard] LOAD_CHART_SUCCESS', props<ChartWrappedModel>());
 
+export const LOAD_CATEGORIES_COUNT = createAction('[dashboard] LOAD_CATEGORIES_COUNT');
+export const LOAD_CATEGORIES_COUNT_SUCCESS = createAction('[dashboard] LOAD_CATEGORIES_COUNT_SUCCESS', props<ChartWrappedModel>());
+
 export const CLEAR_CHART = createAction('[dashboard] CLEAR_CHART');
 export const CLEAR_TILES = createAction('[dashboard] CLEAR_TILES');
 
 export const DISCARD_TILES_LOADING = createAction('[dashboard] DISCARD_TILES_LOADING');
 export const DISCARD_CHART_LOADING = createAction('[dashboard] DISCARD_CHART_LOADING');
+export const DISCARD_CATEGORY_LOADING = createAction('[dashboard] DISCARD_CATEGORY_LOADING');

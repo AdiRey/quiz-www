@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,11 @@ import { Interceptor } from './interceptor';
 import { PaginatorI18n } from './paginator.i18n';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { rootReducer } from '@shared/root-store';
+import { registerLocaleData } from '@angular/common'
+import localePl from '@angular/common/locales/pl';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
+registerLocaleData(localePl);
 
 @NgModule({
   declarations: [
@@ -42,7 +47,9 @@ import { rootReducer } from '@shared/root-store';
     {
       provide: MatPaginatorIntl,
       useFactory: () => new PaginatorI18n().getPaginatorIntl()
-    }
+    },
+    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
+    { provide: LOCALE_ID, useValue: 'pl-PL' }
   ],
   bootstrap: [AppComponent]
 })

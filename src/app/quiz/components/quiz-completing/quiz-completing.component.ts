@@ -40,7 +40,7 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store.dispatch(QuizActions.LOAD_QUIZ_COMPLETE({ id: this._activatedRoute.snapshot.paramMap.get('quizId') }));
-    this._store.select(selectQuizTime).pipe(filter(f => f != null)).subscribe(
+    this._store.select(selectQuizTime).subscribe(
       data => this._setTime(data)
     );
   }
@@ -49,19 +49,23 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
     clearInterval(this._interval);
   }
 
-  _setTime(time: number) {
-    let now, distance, hours, minutes, seconds, desTime = new Date().getTime() + (time * 60000);
-    this._interval = setInterval(() => {
-      now = new Date().getTime();
-      distance = desTime - now;
-      hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      this.timer = hours + 'godz. ' + minutes + 'min. ' + seconds + 's';
-      if (distance < 0) {
-        clearInterval(this._interval);
-      }
-    }, 1000);
+  _setTime(time: number | null) {
+    if (time == null) {
+      this.timer = 'Brak limitu';
+    } else {
+      let now, distance, hours, minutes, seconds, desTime = new Date().getTime() + (time * 60000);
+      this._interval = setInterval(() => {
+        now = new Date().getTime();
+        distance = desTime - now;
+        hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        this.timer = hours + 'godz. ' + minutes + 'min. ' + seconds + 's';
+        if (distance < 0) {
+          clearInterval(this._interval);
+        }
+      }, 1000);
+    }
   }
 
   public setAnswerToQuestionCheckbox(questionId: number, answerId: number, status: any) {

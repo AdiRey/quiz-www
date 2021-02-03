@@ -1,5 +1,6 @@
 export interface QuizModel {
     readonly id?: number;
+    category?: number;
     title: string;
     description?: string;
     time?: number;

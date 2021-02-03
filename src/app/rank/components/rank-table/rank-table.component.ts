@@ -1,17 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CategoryRestApiService } from '@shared/api-service/category.service';
-import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
+import { Store } from '@ngrx/store';
 import { CategoryModel, CategoryEditModel } from '@shared/model/category.model';
 import { ConfirmModel } from '@shared/model/components/confirm-entry.model';
 import { IdModel } from '@shared/model/components/id.model';
 import { QuizDataSource } from '@shared/quiz-table.datasource';
 import { HeaderService } from '@shared/service/header.service';
-import { tap } from 'rxjs/operators';
+import { AppState } from '@shared/store/app-state';
+import { filter, tap } from 'rxjs/operators';
 import { selectLoading } from 'src/app/auth/store';
 import { CategoryFormComponent } from 'src/app/category/components/category-form/category-form.component';
+import * as ToastrActions from '@shared/store/toast/toastr.actions';
+import { UserRestApiService } from '@shared/api-service/user.service';
+import { CategoryRestApiService } from '@shared/api-service/category.service';
+import { Subscription } from 'rxjs';
+import { QuizRestApiService } from '@shared/api-service/quiz.service';
+import { QuizModel } from '@shared/model/quiz.model';
 
 @Component({
   selector: 'app-rank-table',
@@ -20,56 +27,67 @@ import { CategoryFormComponent } from 'src/app/category/components/category-form
 })
 export class RankTableComponent implements OnInit {
 
-  public columns: Array<string> = ['lp', 'name', 'id', 'createDate', 'countQuizzes', 'actions'];
+  public columns: Array<string> = ['lp', 'title', 'names', 'result', 'percentage'];
+
+  public categories: Array<CategoryModel>;
+
+  public quizzes: Array<QuizModel>;
+
+  private _subs: Array<Subscription> = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
+  form: FormGroup;
 
-  public dataSource = new QuizDataSource<CategoryModel>(this._categoryService);
+  public dataSource = new QuizDataSource<CategoryModel>(this._userService);
 
   constructor(
-    private readonly _categoryService: CategoryRestApiService,
-    private readonly _matDialog: MatDialog,
-    private readonly _headerService: HeaderService
+    private readonly _userService: UserRestApiService,
+    private readonly  _categoryService: CategoryRestApiService,
+    private readonly _quizService: QuizRestApiService,
+    private readonly _fb: FormBuilder,
+    private readonly _store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.dataSource.loadData();
-    this._headerService.setAction({
-      text: 'Dodaj kategorię',
-      icon: 'add',
-      action: () => this._matDialog.open<CategoryFormComponent, CategoryEditModel>(CategoryFormComponent, {
-        minWidth: '700px',
-        data: {
-          isEdit: false
-        }
-      }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe()
+    this.form = this._fb.group({
+      categoryId: [null],
+      quizId: [{ value: null, disabled: true }]
     });
+
+    this._categoryService.getAll<CategoryModel>({
+      additionalPath: 'list'
+    }).toPromise().then(
+      data => this.categories = data.list
+    ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
+
+    this._subs.push(this.form.get('categoryId').valueChanges.pipe(filter(f => f != null && f !== '')).subscribe(
+      (data: number) => {
+        this.form.get('quizId').disable();
+        this.quizzes = [];
+        this.form.controls['quizId'].setValue(null);
+        this._quizService.getAll<QuizModel>({
+          additionalPath: 'list',
+          params: {
+            category: data,
+            title: null,
+            questions: null
+          }
+        }).toPromise().then(
+          quiz => {
+            this.form.get('quizId').enable();
+            this.quizzes = quiz.list;
+          }
+        ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
+      }
+    ));
+
+    this.dataSource.setPathAndLoad('ranking');
   }
 
   ngAfterViewInit() {
+    this.dataSource.form = this.form;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sorter = this.matSort;
-  }
-
-  public edit(element: CategoryModel) {
-    this._matDialog.open<CategoryFormComponent, CategoryEditModel>(CategoryFormComponent, {
-      minWidth: '700px',
-      data: {
-        isEdit: true,
-        content: element
-      }
-    }).afterClosed().pipe(tap(() => this.dataSource.loadData())).subscribe();
-  }
-
-  public delete(element: CategoryModel) {
-    // this._matDialog.open<ConfirmEntryComponent, ConfirmModel<CategoryModel, IdModel>>(ConfirmEntryComponent,{
-    //   data: {
-    //     message: 'Czy na pewno chcesz usunąć tą kategorię?',
-    //     element: element,
-    //     action: CategoryActions.DELETE_CATEGORY,
-    //     loadingSelector: selectLoading
-    //   }
-    // }
   }
 }

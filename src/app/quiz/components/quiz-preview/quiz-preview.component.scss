@@ -1,0 +1,15 @@
+.main-section {
+  min-height: calc(100vh - 225px);
+}
+.button-wrapper {
+  width: 100%;
+  text-align: end;
+  margin-top: auto;
+}
+.preview-box {
+  border-radius: 10px;
+  background-color: #cdc9b7;
+}
+.box-shadow {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1), 2px 3px 8px 1px rgba(0, 0, 0, 0.3);
+}

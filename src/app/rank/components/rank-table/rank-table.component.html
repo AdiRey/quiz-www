@@ -1,43 +1,51 @@
 <section class="table-wrapper">
+    <section class="form-in-table-wrapper">
+        <form [formGroup]="form">
+            <mat-form-field>
+                <mat-label>Wybierz kategorię</mat-label>
+                <mat-select formControlName="categoryId">
+                  <mat-option *ngFor="let category of categories" [value]="category.id">
+                    {{ category.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="ml-3">
+                <mat-label>Wybierz quiz</mat-label>
+                <mat-select formControlName="quizId">
+                  <mat-option *ngFor="let quiz of quizzes" [value]="quiz.id">
+                    {{ quiz.title }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </form>
+    </section>
     <mat-table [dataSource]="dataSource" matSort>
+
+        <!-- ['lp', 'title', 'names', 'points', 'percentage'] -->
 
         <ng-container matColumnDef="lp">
             <mat-header-cell *matHeaderCellDef class="col-1">Lp</mat-header-cell>
             <td *matCellDef="let element" class="col-1">{{ element.lp }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-4">Nazwa</mat-header-cell>
-            <td *matCellDef="let element" class="col-4">{{ element.name }}</td>
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Tytuł</mat-header-cell>
+            <td *matCellDef="let element" class="col-3">{{ element.quiz.title }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Id</mat-header-cell>
-            <td *matCellDef="let element" class="col-2">{{ element.id }}</td>
+        <ng-container matColumnDef="names">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Imię i nazwisko</mat-header-cell>
+            <td *matCellDef="let element" class="col-3">{{ (element.user.firstName + ' ' + element.user.lastName) | common:'replaceNull' }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="createDate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Data utworzenia</mat-header-cell>
-            <td *matCellDef="let element" class="col-2">{{ element.createDate | date:'medium' }}</td>
+        <ng-container matColumnDef="result">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Liczba punktów</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ (element.points + ' / ' + element.quiz.points) | common:'replaceNull' }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="countQuizzes">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Ilość quizów</mat-header-cell>
-            <td *matCellDef="let element" class="col-2">{{ element.countQuizzes }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef class="col-1 action-header">Akcje</mat-header-cell>
-            <td *matCellDef="let element" class="col-1">
-                <div class="action-buttons">
-                    <button mat-icon-button color="primary" title="Edytuj" (click)="edit(element)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="accent" title="Usuń" (click)="delete(element)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-            </td>
+        <ng-container matColumnDef="percentage">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Wynik w procentach</mat-header-cell>
+            <td *matCellDef="let element" class="col-3">{{ (element.points / element.quiz.points) | common:'percentage' }}</td>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="columns"></mat-header-row>

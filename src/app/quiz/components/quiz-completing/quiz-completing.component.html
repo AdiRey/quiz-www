@@ -1,14 +1,14 @@
 <app-loader [loading]="loading$ | async">
     <form>
         <mat-horizontal-stepper *ngIf="quizComplete$ | async as quizComplete">
-            <mat-step *ngFor="let question of quizComplete.questions; let last = last">
-                <section class="d-flex flex-column align-items-start justify-content-around question">
-                    <h1> Polecenie: {{ question.content }} </h1>
-                    <img *ngIf="question.image" width="600px" height="300px" [src]="question.image"/>
+            <mat-step *ngFor="let question of quizComplete.questions; let first = first; let last = last">
+                <section class="d-flex pl-5 flex-column align-items-start justify-content-around question">
+                    <h1> {{ question.content }} </h1>
+                    <img *ngIf="question.image; else emptyImg" width="600px" height="300px" [src]="question.image"/>
+                    <ng-template #emptyImg>
+                        <div class="question-mark"></div>
+                    </ng-template>
                     <section class="pt-5 answers">
-                        <span class="command">
-                            Odpowiedzi:
-                        </span>
                         <div *ngIf="question.type === 'CHECKBOX'; else radio" class="d-flex flex-column pt-3">
                             <mat-checkbox #qC
                                 *ngFor="let answer of question.answers"
@@ -27,12 +27,16 @@
                             </mat-radio-group>
                         </ng-template>
                     </section>
-                    <section class="w-100 d-flex justify-content-between pt-5">
-                        <button mat-raised-button color="primary">Poprzednie</button>
-                        <button mat-raised-button color="accent">Następne</button>
-                    </section>
-                    <section *ngIf="last">
-                        <button mat-raised-button (click)="save()">Zakończ quiz</button>
+                    <section class="w-100 d-flex pt-5">
+                        <section *ngIf="!first">
+                            <button mat-raised-button color="primary">Poprzednie</button>
+                        </section>
+                        <section *ngIf="last; else notLast" class="ml-auto">
+                            <button mat-raised-button color="accent" (click)="save()">Zakończ quiz</button>
+                        </section>
+                        <ng-template #notLast>
+                            <button mat-raised-button color="accent" class="ml-auto">Następne</button>
+                        </ng-template>
                     </section>
                     <section class="timer">
                         <span>

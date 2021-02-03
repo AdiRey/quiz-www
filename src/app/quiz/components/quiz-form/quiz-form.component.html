@@ -6,7 +6,7 @@
             <form *ngIf="form.controls['basic'] as basic" [formGroup]="basic" class="form">
               <ng-template matStepLabel>Podstawowe dane</ng-template>
 
-                <mat-form-field appearance="fill" >
+                <mat-form-field appearance="outline" >
                   <mat-label>Nazwa quizu</mat-label>
                   <input matInput #quizName formControlName="title" maxlength="50">
                   <mat-hint align="end">{{quizName.value?.length || 0}}/50</mat-hint>
@@ -16,7 +16,7 @@
                 </mat-form-field>
 
                 <div formGroupName="category">
-                  <mat-form-field appearance="fill">
+                  <mat-form-field appearance="outline">
                     <mat-label>Wybierz kategorię</mat-label>
                     <mat-select formControlName="id">
                       <mat-option *ngFor="let category of categories" [value]="category.id">
@@ -29,7 +29,7 @@
                   </mat-form-field>
                 </div>
 
-                <mat-form-field appearance="fill" class="textarea">
+                <mat-form-field appearance="outline" class="textarea">
                   <mat-label>Opis</mat-label>
                   <textarea matInput
                       rows="7"
@@ -37,7 +37,7 @@
                   </textarea>
                 </mat-form-field>
                 
-                <mat-form-field appearance="fill" hintLabel="Domyślnie nielimitowany">
+                <mat-form-field appearance="outline" hintLabel="Domyślnie nielimitowany">
                   <mat-label>Czas trwania quizu</mat-label>
                   <input matInput formControlName="time" type="number">
                   <span matSuffix>
@@ -50,7 +50,7 @@
 
                 <mat-checkbox #approaches formControlName="isInfinity">Nielimitowana ilość podejść</mat-checkbox>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                   <mat-label>Ilość podejść</mat-label>
                   <input matInput formControlName="approachesCount" type="number" [readonly]="approaches.checked">
                   <mat-error *ngIf="basic['controls']['approachesCount'].invalid">
@@ -58,7 +58,7 @@
                   </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                   <mat-label>Data rozpoczęcia quizu</mat-label>
                   <input matInput formControlName="startDate" [ngxMatDatetimePicker]="startPicker" [min]="minDate">
                   <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -72,7 +72,7 @@
                   </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                   <mat-label>Data zakończenia quizu</mat-label>
                   <input matInput formControlName="endingDate" [ngxMatDatetimePicker]="endingPicker" [min]="getEndMinDate()">
                   <mat-datepicker-toggle matSuffix [for]="endingPicker"></mat-datepicker-toggle>
@@ -136,7 +136,7 @@
 
                     <span class="question__number"> Numer pytania: {{ questionId + 1 }} </span>
 
-                    <mat-form-field appearance="fill" class="textarea">
+                    <mat-form-field appearance="outline" class="textarea">
                       <mat-label>Treść pytania</mat-label>
                       <textarea matInput
                           rows="7"
@@ -161,7 +161,7 @@
                     </div>
 
                     <div class="item-mr-10">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                         <mat-label>Liczba punktów</mat-label>
                         <input matInput formControlName="pointsCount" type="number" required>
                         <mat-error *ngIf="question['controls']['pointsCount'].invalid">
@@ -169,7 +169,7 @@
                         </mat-error>
                       </mat-form-field>
   
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                         <mat-label>Typ pytania</mat-label>
                         <mat-select formControlName="type" #select>
                           <mat-option *ngFor="let option of options" [value]="option.value">
@@ -195,7 +195,7 @@
                           <mat-checkbox *ngIf="select.value === 'CHECKBOX'" formControlName="correct" class="align-self-center"></mat-checkbox>
                           <mat-radio-button *ngIf="select.value === 'RADIO'" [value]="answerId" class="align-self-center"></mat-radio-button>
   
-                          <mat-form-field appearance="fill" >
+                          <mat-form-field appearance="outline" >
                             <mat-label>Odpowiedź</mat-label>
                             <input matInput #answerContent formControlName="content" maxlength="50">
                             <mat-hint align="end">{{answerContent.value?.length || 0}}/50</mat-hint>

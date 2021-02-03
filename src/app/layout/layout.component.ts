@@ -24,6 +24,7 @@ export class LayoutComponent implements OnInit {
 
   public currentLink$: Observable<string>;
   public itemsObj = {};
+  public active;
 
   public items = [
     {
@@ -63,18 +64,18 @@ export class LayoutComponent implements OnInit {
     private readonly _headerService: HeaderService,
     private readonly _store: Store<AppState>
   ) {
+    for (let i of this.items) {
+      this.itemsObj[i.route] = { content: i.content, icon: i.icon };
+    }
     this._router.events.pipe(
       filter(f => f instanceof NavigationEnd),
       distinctUntilChanged((prev: NavigationEnd, next: NavigationEnd) => prev.url === next.url ),
       tap(() => this._headerService.setAction(null)),
+      tap(data => this.active = this.itemsObj[Object.keys(this.itemsObj).filter(key => data.url.startsWith(key))[0]])
     ).subscribe();
   }
 
-  ngOnInit(): void {
-    for (let i of this.items) {
-      this.itemsObj[i.route] = { content: i.content, icon: i.icon };
-    }
-  }
+  ngOnInit(): void { }
 
   public logout() {
     this._store.dispatch(RootActions.CLEAR_USER());

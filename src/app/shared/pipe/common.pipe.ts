@@ -20,6 +20,10 @@ export class CommonPipe implements PipeTransform {
                 return value ? new DatePipe('pl').transform(value, 'medium') : '---';
             case 'emptyTime':
                 return value ? value + ' min' : 'Nielimitowany';
+            case 'replaceNull':
+                return value.replaceAll('null', '---');
+            case 'percentage':
+                return Number.isNaN(value) ? 'Błędne dane' : Number.isInteger(value) ? value + ' %' : value.toFixed(2) + ' %';
         }
     }
 

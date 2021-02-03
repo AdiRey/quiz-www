@@ -22,7 +22,7 @@ import { ActionType, ConfirmModel } from '@shared/model/components/confirm-entry
   templateUrl: './quiz-form.component.html',
   styleUrls: ['./quiz-form.component.scss'],
   providers: [
-    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true, displayDefaultIndicatorType: false }}
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true, displayDefaultIndicatorType: false, optionalLabel: 'Opcjonalne' }}
   ]
 })
 export class QuizFormComponent implements OnInit, OnDestroy {
@@ -201,7 +201,7 @@ export class QuizFormComponent implements OnInit, OnDestroy {
 
   public save() {
     const action = this.isEdit ? QuizActions.EDIT_QUIZ : QuizActions.SAVE_QUIZ;
-    const message = 'Czy na pewno chcesz ' + (this.isEdit? 'zapisać' : 'edytować') + ' quiz?'
+    const message = 'Czy na pewno chcesz ' + (this.isEdit? 'edytować' : 'zapisać') + ' quiz?'
     this._matDialog.open<ConfirmEntryComponent, ConfirmModel<QuizModel, QuizModel>>(ConfirmEntryComponent, {
       width: '750px',
       height: '230px',

@@ -13,6 +13,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthPageComponent } from './components/auth-page/auth-page.component';
 import { AuthLoaderComponent } from './components/auth-loader/auth-loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [AuthComponent, AuthPageComponent, AuthLoaderComponent],
@@ -23,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forFeature([AuthEffect])
   ]

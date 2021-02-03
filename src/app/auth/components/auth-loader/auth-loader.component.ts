@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
 import { AppState } from '@shared/store/app-state';
 import { selectLoading } from '../../store';
 import * as AuthActions from '../../store/auth.actions';
@@ -13,7 +12,7 @@ import * as AuthActions from '../../store/auth.actions';
 })
 export class AuthLoaderComponent implements OnInit {
 
-  public loading$ = this._store.select(selectLoading).pipe(filter(f => f != null));
+  public loading$ = this._store.select(selectLoading);
 
   constructor(
     private readonly _store: Store<AppState>,

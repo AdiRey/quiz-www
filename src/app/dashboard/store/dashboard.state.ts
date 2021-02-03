@@ -6,9 +6,11 @@ export interface DashboardState {
     quizCount: ChartModel;
     userCount: ChartModel
     activeCount: ChartModel;
+    categoryQuizCount: ChartWrappedModel;
     chart: ChartWrappedModel;
     loadingChart: boolean;
     countTileLoadingNumber: number;
+    categoryQuizLoading: boolean;
 }
 
 export const initialDashboardState: DashboardState = {
@@ -16,7 +18,9 @@ export const initialDashboardState: DashboardState = {
     quizCount: null,
     userCount: null,
     activeCount: null,
+    categoryQuizCount: null,
     chart: null,
     loadingChart: false,
-    countTileLoadingNumber: 0
+    countTileLoadingNumber: 0,
+    categoryQuizLoading: false
 }

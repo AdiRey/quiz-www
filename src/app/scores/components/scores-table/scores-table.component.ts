@@ -21,7 +21,7 @@ export class ScoresTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
 
-  public columns: Array<string> = ['quizId', 'title', 'createDate'];
+  public columns: Array<string> = ['lp', 'title', 'createDate', 'result', 'percentage'];
   public categories: Array<CategoryModel>;
   public dataSource = new QuizDataSource<ScoresModel>(this._userService);
   public form: FormGroup;

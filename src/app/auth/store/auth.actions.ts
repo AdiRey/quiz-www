@@ -10,4 +10,6 @@ export const LOAD_TOKEN_SUCCESS = createAction('[auth] LOAD_TOKEN_SUCCESS', prop
 
 export const SET_USER_DATA = createAction('[auth] SET_USER_DATA', props<UserModel>());
 
+export const EXTEND_LOADER = createAction('[auth] EXTEND_LOADER');
+
 export const DISCARD_LOADING = createAction('[auth] DISCARD_LOADING');

@@ -108,4 +108,21 @@ export class DashboardEffects {
             )
         )
     );
+
+    loadCategoryQuiz$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(DashboardActions.LOAD_CATEGORIES_COUNT),
+            switchMap(() =>
+                this._categoryService.get<Array<ChartModel>>({
+                    additionalPath: 'statistic-count-charts'
+                }).pipe(
+                    map(data => DashboardActions.LOAD_CATEGORIES_COUNT_SUCCESS({ content: data })),
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error }),
+                        DashboardActions.DISCARD_CATEGORY_LOADING()
+                    ))
+                )
+            )
+        )
+    );
 }

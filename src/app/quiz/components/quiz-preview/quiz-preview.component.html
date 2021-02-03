@@ -1,10 +1,10 @@
 <app-loader [loading]="loading$ | async">
-    <section *ngIf="quizPreview$ | async as quizPreview" class="d-flex flex-wrap">
-        <section class="d-flex flex-column col-6 align-items-center justify-content-around">
+    <section *ngIf="quizPreview$ | async as quizPreview" class="d-flex flex-wrap main-section">
+        <section class="preview-box box-shadow d-flex flex-column col-6 align-items-center justify-content-around pb-3">
             <h1>Tytuł: {{ quizPreview.title }}</h1>
             <h2>Opis: {{ quizPreview.description }}</h2>
             <h1>Kategoria: {{ quizPreview.category.name }}</h1>
-            <h2>Czas trwania quizu: {{ quizPreview.time }}</h2>
+            <h2>Czas trwania quizu: {{ quizPreview.time || 'Brak limitu' }}</h2>
             <h3>Data rozpoczęcia dostępności quizu: {{ quizPreview.startDate | date:'medium' || 'Brak' }}</h3>
             <h3>Data zakończenia dostępności quizu: {{ quizPreview.endingDate | date:'medium' || 'Brak' }}</h3>
             <p>Ilość prób: {{ quizPreview.approachesCount || "Nieskończona" }}</p>
@@ -12,13 +12,13 @@
                 <p>Pozostało Ci prób: {{ approachesCount$ | async }} </p> 
             </section>
         </section>
-        <section class="col-6">
-            <img id="img" width="600px" height="400px" [src]="quizPreview.image || defaultImage" />
+        <section class="col-6 pb-3" style="text-align: center;">
+            <img class="box-shadow" style="border-radius: 5px;" id="img" width="600px" height="400px" [src]="quizPreview.image || defaultImage" />
         </section>
-        <section class="button-section" class="d-flex col-12">
+        <section class="button-section" class="button-wrapper">
             <button
                 mat-raised-button
-                color="primary"
+                color="accent"
                 class="ml-auto"
                 [disabled]="getCorrectDate(quizPreview.startDate, quizPreview.endingDate) || (approachesCount$ | async) === 0"
                 (click)="startQuiz(quizPreview.time)">

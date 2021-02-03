@@ -13,9 +13,11 @@
     </section>
     <mat-table [dataSource]="dataSource" matSort>
 
-        <ng-container matColumnDef="quizId">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-4">Id quizu</mat-header-cell>
-            <td *matCellDef="let element" class="col-4">{{ element.quiz.id }}</td>
+<!-- 'lp', 'title', 'createDate', 'result', 'percentage' -->
+
+        <ng-container matColumnDef="lp">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-1">Lp</mat-header-cell>
+            <td *matCellDef="let element" class="col-1">{{ element.lp }}</td>
         </ng-container>
 
         <ng-container matColumnDef="title">
@@ -25,8 +27,18 @@
 
 
         <ng-container matColumnDef="createDate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-4">Data przystąpienia</mat-header-cell>
-            <td *matCellDef="let element" class="col-4">{{ element.createDate | common:'emptyDate' }}</td>
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Data przystąpienia</mat-header-cell>
+            <td *matCellDef="let element" class="col-3">{{ element.createDate | common:'emptyDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="result">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Liczba punktów</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ (element.points + ' / ' + element.quiz.points) | common:'replaceNull' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="percentage">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Wynik w procentach</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ (element.points / element.quiz.points) | common:'percentage' }}</td>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="columns"></mat-header-row>

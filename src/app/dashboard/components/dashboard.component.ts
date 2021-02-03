@@ -3,8 +3,8 @@ import { select, Store } from '@ngrx/store';
 import { ChartModel } from '@shared/model/dashboard.model';
 import { AppState } from '@shared/store/app-state';
 import { combineLatest, merge, Observable, Subscription } from 'rxjs';
-import { delay, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { selectActiveCount, selectCategoryCount, selectChart, selectCountTileLoadingBoolean, selectCountTileLoadingNumber, selectLoadingChart, selectQuizCount, selectUserCount } from '../store';
+import { delay, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
+import { selectActiveCount, selectCategoryCount, selectCategoryQuizCount, selectCategoryQuizLoading, selectChart, selectCountTileLoadingBoolean, selectCountTileLoadingNumber, selectLoadingChart, selectQuizCount, selectUserCount } from '../store';
 import * as DashboardActions from '../store/dashboard.actions';
 
 @Component({
@@ -22,7 +22,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public loadingChart$: Observable<boolean> = this._store.select(selectLoadingChart);
 
+  public loadingCategories$ = this._store.select(selectCategoryQuizLoading);
+
   public loaded: boolean = false;
+
+  public categories$ = this._store.select(selectCategoryQuizCount).pipe(
+    filter(f => f != null),
+    map(data => {
+      return data.content.map(x => {
+        return {
+          name: x.name,
+          value: x['countQuizzes']
+        }
+      })
+    })
+  );
   
   public tiles: Array<ChartModel> = [];
 
@@ -39,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store.dispatch(DashboardActions.LOAD_TILES({ count: 4 }));
     this._store.dispatch(DashboardActions.LOAD_CHART());
+    this._store.dispatch(DashboardActions.LOAD_CATEGORIES_COUNT());
     this._subs.push(merge(
       this._store.pipe(select(selectCategoryCount)),
       this._store.pipe(select(selectUserCount)),
@@ -47,22 +62,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ).pipe(filter(f => f != null)).subscribe(data => {
       this.tiles.push(data);
     }));
+    this.chart.data = this._getLastWeek();
     this._subs.push(this._store.select(selectChart).pipe(filter(f => f != null)).subscribe(
       data => {
-        this.chart.data = data.content.map(value => {
-          console.log(this._getDayPl(new Date(value.name).getDay()));
-          return {
-            id: value.id,
-            name: this._getDayPl(new Date(value.name).getDay()),
-            value: value.value 
+        this.chart.data = this.chart.data.map(
+          day => {
+            let temp = data.content.filter(f => this._getDayPl(new Date(f.name).getDay()) === day.name);
+            if (temp.length) {
+              return {
+                name: day.name,
+                value: temp[0].value
+              }
+            }
+            return day;
           }
-        });
+        )
         this.chart.data = this.chart.data.reverse();
         this.loaded = true;
       }
     ));
-
-    setTimeout(() => console.log(this.tiles),5000);
   }
 
   ngOnDestroy(): void {
@@ -88,6 +106,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       case 6:
         return 'Sobota'
     }
+  }
+
+  private _getLastWeek() {
+    let days = [];
+    for (let i = 1; i < 8; i++) {
+      let date = new Date();
+      date.setDate(date.getDate() - i);
+      days.push({
+        id: 1,
+        name: this._getDayPl(date.getDay()),
+        value: i // 0
+      });
+    }
+    return days;
   }
 
   bestCategories = [

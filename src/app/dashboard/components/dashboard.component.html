@@ -1,7 +1,7 @@
 <section class="container-fluid">
     <section class="col-2 tiles">
         <app-loader [loading]="loadingTiles$ | async">
-            <section *ngIf="(loadingTilesNumber$ | async) == 0">
+            <section *ngIf="(loadingTilesNumber$ | async) == 0" class="w-100 h-100">
                 <ngx-charts-number-card
                     [results]="tiles"
                     [cardColor]="'#232837'">
@@ -28,9 +28,13 @@
         </section>
         <section class="separator"></section>
         <section class="second">
-            <ngx-charts-pie-grid 
-                [results]="bestCategories">
-            </ngx-charts-pie-grid>
+            <app-loader [loading]="loadingCategories$ | async">
+                <section *ngIf="categories$ | async as categories" class="w-100 h-100">
+                    <ngx-charts-pie-grid 
+                        [results]="categories">
+                    </ngx-charts-pie-grid>
+                </section>
+            </app-loader>
         </section>
     </section>
 </section>

@@ -1,7 +1,9 @@
 .main-section {
   width: 100vw;
   height: 100vh;
-  background-color: #fcfcfc;
+  background-image: url("../../../../assets/images/light-grey.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -12,21 +14,23 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-around;
-      min-height: 400px;
+      min-height: 300px;
     }
     display: flex;
-    background-color: #fff;
+    background-color: #fafafa;
     box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
       0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
       0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
       0 100px 80px rgba(0, 0, 0, 0.12), 0 -10px 30px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    min-height: 400px;
+    min-height: 300px;
     &__h4 {
-      letter-spacing: 3px;
+      font-size: 19px;
+      letter-spacing: 2px;
       font-weight: bolder;
     }
     &__span {
+      font-size: 18px;
       font-variant: small-caps;
     }
     &__h1 {
@@ -35,5 +39,10 @@
       text-align: center;
       width: 100%;
     }
+  }
+}
+:host ::ng-deep {
+  .mat-progress-bar {
+    height: 5px;
   }
 }

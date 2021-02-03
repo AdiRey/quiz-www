@@ -43,3 +43,13 @@ export const selectChart = createSelector(
     selectDashboardState,
     state => state.chart
 );
+
+export const selectCategoryQuizCount = createSelector(
+    selectDashboardState,
+    state => state.categoryQuizCount
+);
+
+export const selectCategoryQuizLoading = createSelector(
+    selectDashboardState,
+    state => state.categoryQuizLoading
+);

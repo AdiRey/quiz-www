@@ -12,8 +12,8 @@ export class QuizDataSource<T = any> implements DataSource<T> {
     private _innerSubs: Array<Subscription> = [];
     private _dataTable: Array<T>;
 
-    private _loading$$ = new BehaviorSubject<boolean>(false);
-    private _data$$ = new BehaviorSubject<Array<T>>([]);
+    private _loading$ = new BehaviorSubject<boolean>(false);
+    private _data$ = new BehaviorSubject<Array<T>>([]);
 
     // filters
     private _paginator: MatPaginator;
@@ -23,7 +23,7 @@ export class QuizDataSource<T = any> implements DataSource<T> {
     private _additionalPath: string = 'list';
 
 
-    public loading$: Observable<boolean> = this._loading$$.asObservable();
+    public loading$: Observable<boolean> = this._loading$.asObservable();
 
     get data() {
         return this._dataTable || [];
@@ -121,15 +121,18 @@ export class QuizDataSource<T = any> implements DataSource<T> {
             }
         }
     ) {
-        this._loading$$.next(true);
+        this._loading$.next(true);
 
         this._innerSubs.push(
             this._apiService.getAll<T>(paginationModel).pipe(
                 catchError(() => []),
-                finalize(() => this._loading$$.next(false))
+                finalize(() => this._loading$.next(false))
             ).subscribe(data => {
+                data.list = data.list.map((value, index) => {
+                    return { ...value, lp: index + 1 + (this._paginator ? (this._paginator.pageIndex * this._paginator.pageSize) : 0) }
+                });
                 this._dataTable = data.list;
-                this._data$$.next(data.list);
+                this._data$.next(data.list);
                 if (this._paginator) {
                     this._paginator.length = data.paginator.totalElements;
                 }
@@ -139,19 +142,15 @@ export class QuizDataSource<T = any> implements DataSource<T> {
 
 
     public connect(): Observable<T[] | readonly T[]> {
-        return this._data$$.asObservable();
+        return this._data$.asObservable();
     }
 
     public disconnect(): void {
-        this._loading$$.complete();
-        this._data$$.complete();
+        this._loading$.complete();
+        this._data$.complete();
         this._innerSubs.forEach(sub => sub.unsubscribe());
-        if (this._loading$$) {
-            this._loading$$.unsubscribe();
-        }
-        if (this._data$$) {
-            this._data$$.unsubscribe();
-        }
+        this._loading$.unsubscribe();
+        this._data$.unsubscribe();
     }
 
 }

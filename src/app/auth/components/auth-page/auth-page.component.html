@@ -4,16 +4,16 @@
             <app-logo></app-logo>
         </div>
         <div *ngIf="(user$ | async)?.firstName; else notLoggedIn" class="img-container__nav--options">
-            <div *ngIf="user$ | async as user">
+            <div *ngIf="user$ | async as user" style="font-size: 18px;">
                 {{ user.firstName + ' ' + user.lastName }}
             </div>
         </div>
         <ng-template #notLoggedIn>
             <div class="img-container__nav--options">
-                <div>
-                    Język
-                </div>
-                <button class="login-button" mat-raised-button color="primary" (click)="loginRoute()">
+                <button mat-stroked-button color="basic">
+                    FAQ
+                </button>
+                <button class="login-button" mat-raised-button color="accent" (click)="loginRoute()">
                     Zaloguj
                 </button>
             </div>
@@ -25,7 +25,7 @@
             <span class="img-container__section--span">Przetestuj swoje możliwości</span>
             <button
                 *ngIf="(user$ | async)?.firstName"
-                mat-raised-button
+                mat-stroked-button
                 color="accent"
                 class="main-button"
                 (click)="goToDashboard()">
