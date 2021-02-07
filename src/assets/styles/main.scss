@@ -15,12 +15,18 @@
 @font-face {
   font-family: "Segoe UI Italic";
   src: url("../fonts/Segoe\ UI\ Italic.ttf");
-  font-style: normal;
+  font-style: italic;
 }
 
 @font-face {
   font-family: "Segoe UI Bold Italic";
   src: url("../fonts/Segoe\ UI\ Bold\ Italic.ttf");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Regular.ttf");
   font-style: normal;
 }
 
@@ -34,7 +40,7 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Lato", Arial, Helvetica, sans-serif;
+  font-family: "Nunito", "Lato", Arial, Helvetica, sans-serif;
 }
 
 mat-dialog-container {
