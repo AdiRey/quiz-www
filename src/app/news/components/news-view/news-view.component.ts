@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { NewsModel } from '@shared/model/news.model';
 import { AppState } from '@shared/store/app-state';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import SwiperCore, { Virtual, Navigation, Pagination } from 'swiper/core';
-import { selectNewsData, selectNewsLoading } from '../../store';
+import { selectNewsData, selectNewsDataLength, selectNewsLoading } from '../../store';
 import * as NewsActions from '../../store/news.actions';
 
 SwiperCore.use([Virtual, Pagination, Navigation]);
@@ -35,6 +35,7 @@ export class NewsViewComponent implements OnInit {
 
   public news$: Observable<Array<NewsModel>> = this._store.select(selectNewsData).pipe(filter(f => f != null));
   public loading$: Observable<boolean> = this._store.select(selectNewsLoading);
+  public newsLength$: Observable<boolean> = this._store.select(selectNewsDataLength).pipe(map(d => !!d));
 
   constructor(
     private readonly _store: Store<AppState>,

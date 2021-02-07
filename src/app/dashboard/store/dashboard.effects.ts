@@ -44,7 +44,10 @@ export class DashboardEffects {
                     additionalPath: 'count'
                 }).pipe(
                     map(data => DashboardActions.LOAD_TILE_CATEGORY_COUNT_SUCCESS(data)),
-                    catchError(error => of(ToastrActions.SHOW_ERROR({ message: error })))
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error }),
+                        DashboardActions.DISCARD_TILES_LOADING()
+                    ))
                 )
             )
         )
@@ -58,7 +61,10 @@ export class DashboardEffects {
                     additionalPath: 'count'
                 }).pipe(
                     map(data => DashboardActions.LOAD_TILE_QUIZ_COUNT_SUCCESS(data)),
-                    catchError(error => of(ToastrActions.SHOW_ERROR({ message: error })))
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error }),
+                        DashboardActions.DISCARD_TILES_LOADING()
+                    ))
                 )
             )
         )
@@ -72,7 +78,10 @@ export class DashboardEffects {
                     additionalPath: 'count'
                 }).pipe(
                     map(data => DashboardActions.LOAD_TILE_USER_COUNT_SUCCESS(data)),
-                    catchError(error => of(ToastrActions.SHOW_ERROR({ message: error })))
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error }),
+                        DashboardActions.DISCARD_TILES_LOADING()
+                    ))
                 )
             )
         )
@@ -86,7 +95,10 @@ export class DashboardEffects {
                     additionalPath: 'latest-online'
                 }).pipe(
                     map(data => DashboardActions.LOAD_TILE_ACTIVE_COUNT_SUCCESS(data)),
-                    catchError(error => of(ToastrActions.SHOW_ERROR({ message: error })))
+                    catchError(error => of(
+                        ToastrActions.SHOW_ERROR({ message: error }),
+                        DashboardActions.DISCARD_TILES_LOADING()
+                    ))
                 )
             )
         )

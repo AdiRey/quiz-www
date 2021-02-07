@@ -55,3 +55,16 @@
   align-items: center;
   border-top: 1px solid #fff;
 }
+.empty-news {
+  width: 700px;
+  display: block;
+  font-size: 40px;
+  font-style: italic;
+  color: #fe3d8a;
+  text-align: center;
+  margin: 300px auto 0;
+  padding: 60px 30px;
+  border-radius: 30px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.012), 0 2px 7px rgba(0, 0, 0, 0.024),
+    0 4px 10px rgba(0, 0, 0, 0.54);
+}

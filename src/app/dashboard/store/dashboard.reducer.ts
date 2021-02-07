@@ -7,7 +7,7 @@ const _dashboardReducer = createReducer(
     on(DashboardActions.LOAD_TILES, (state, res) => ({ ...state, countTileLoadingNumber: res.count })),
     on(DashboardActions.LOAD_TILE_CATEGORY_COUNT_SUCCESS, (state, res) => ({
         ...state,
-        countTileLoadingNumber:state.countTileLoadingNumber - 1,
+        countTileLoadingNumber: !state.countTileLoadingNumber ? state.countTileLoadingNumber : state.countTileLoadingNumber - 1,
         categoryCount: {
             name: 'Ilość kategorii',
             value: res.count
@@ -15,7 +15,7 @@ const _dashboardReducer = createReducer(
     })),
     on(DashboardActions.LOAD_TILE_QUIZ_COUNT_SUCCESS, (state, res) => ({
         ...state,
-        countTileLoadingNumber: state.countTileLoadingNumber - 1,
+        countTileLoadingNumber: !state.countTileLoadingNumber ? state.countTileLoadingNumber : state.countTileLoadingNumber - 1,
         quizCount: {
             name: 'Ilość quizów',
             value: res.count
@@ -23,7 +23,7 @@ const _dashboardReducer = createReducer(
     })),
     on(DashboardActions.LOAD_TILE_USER_COUNT_SUCCESS, (state, res) => ({
         ...state,
-        countTileLoadingNumber:state.countTileLoadingNumber - 1,
+        countTileLoadingNumber: !state.countTileLoadingNumber ? state.countTileLoadingNumber : state.countTileLoadingNumber - 1,
         userCount: {
             name: 'Ilość użytkowników',
             value: res.count
@@ -31,7 +31,7 @@ const _dashboardReducer = createReducer(
     })),
     on(DashboardActions.LOAD_TILE_ACTIVE_COUNT_SUCCESS, (state, res) => ({
         ...state,
-        countTileLoadingNumber: state.countTileLoadingNumber - 1,
+        countTileLoadingNumber: !state.countTileLoadingNumber ? state.countTileLoadingNumber : state.countTileLoadingNumber - 1,
         activeCount: {
             name: 'Ostatnio aktywnych',
             value: res.count
@@ -50,7 +50,7 @@ const _dashboardReducer = createReducer(
 
     on(DashboardActions.DISCARD_CHART_LOADING, state => ({ ...state, loadingChart: false })),
     on(DashboardActions.DISCARD_TILES_LOADING, state => ({ ...state, countTileLoadingNumber: 0 })),
-    on(DashboardActions.DISCARD_TILES_LOADING, state => ({ ...state, categoryQuizLoading: false }))
+    on(DashboardActions.DISCARD_CATEGORY_LOADING, state => ({ ...state, categoryQuizLoading: false }))
 )
 
 

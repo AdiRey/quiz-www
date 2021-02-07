@@ -1,17 +1,24 @@
 <app-loader [loading]="loading$ | async">
     <section class="module-content init-height">
-        <section *ngFor="let category of (news$ | async); let i = index" class="category">
-            <h2 class="category__h2">{{ category.name }}</h2>
-            <swiper [slidesPerView]="5" [spaceBetween]="5" [virtual]="true" [pagination]="pagination" [speed]="700" [navigation]="navigation" [slidesPerGroup]="5">
-                <ng-container *ngFor="let quiz of category.latestQuizzes; let j = index">
-                    <ng-template swiperSlide>
-                        <img [src]="quiz.image || defaultImage" width="100%" height="80%" (click)="goToQuiz(quiz.id)">
-                        <span class="title" (click)="goToQuiz(quiz.id)">
-                            {{ quiz.title }}
-                        </span>
-                    </ng-template>
-                </ng-container>
-            </swiper>
-        </section>
+        <div *ngIf="newsLength$ | async; else emptyNews">
+            <section *ngFor="let category of (news$ | async); let i = index" class="category">
+                <h2 class="category__h2">{{ category.name }}</h2>
+                <swiper [slidesPerView]="5" [spaceBetween]="5" [virtual]="true" [pagination]="pagination" [speed]="700" [navigation]="navigation" [slidesPerGroup]="5">
+                    <ng-container *ngFor="let quiz of category.latestQuizzes; let j = index">
+                        <ng-template swiperSlide>
+                            <img [src]="quiz.image || defaultImage" width="100%" height="80%" (click)="goToQuiz(quiz.id)">
+                            <span class="title" (click)="goToQuiz(quiz.id)">
+                                {{ quiz.title }}
+                            </span>
+                        </ng-template>
+                    </ng-container>
+                </swiper>
+            </section>
+        </div>
+        <ng-template #emptyNews>
+            <div class="empty-news">
+                Brak nowych quizów.
+            </div>
+        </ng-template>
     </section>
 </app-loader>

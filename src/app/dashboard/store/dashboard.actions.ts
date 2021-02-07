@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { ChartModel, ChartWrappedModel, CountModel } from "@shared/model/dashboard.model";
+import { ChartWrappedModel, CountModel } from "@shared/model/dashboard.model";
 
 export const LOAD_TILES = createAction('[dashboard] LOAD_TILES', props<CountModel>());
 

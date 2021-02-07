@@ -10,6 +10,11 @@ export const selectNewsData = createSelector(
     state => state.data
 );
 
+export const selectNewsDataLength = createSelector(
+    selectNews,
+    state => state.data && state.data.length
+);
+
 export const selectNewsLoading = createSelector(
     selectNews,
     state => state.loading
