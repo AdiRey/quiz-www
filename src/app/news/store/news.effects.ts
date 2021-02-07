@@ -31,8 +31,7 @@ export class NewsEffect {
                     mergeMap(data => [
                         NewsActions.LOAD_CATEGORIES_SUCCESS({
                             content: data
-                        }),
-                        ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie załadowano najnowsze quizy.' })
+                        })
                     ]),
                     catchError(error => of(
                         NewsActions.DISCARD_LOADING(),

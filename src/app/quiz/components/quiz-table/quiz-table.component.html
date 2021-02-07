@@ -48,10 +48,10 @@
                     <button mat-icon-button color="warn" title="Wypełnij" (click)="preview(element)">
                         <mat-icon>double_arrow</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" title="Edytuj" (click)="edit(element)">
+                    <button mat-icon-button color="primary" title="Edytuj" (click)="edit(element)" *isAdmin="true">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="accent" title="Usuń" (click)="delete(element)">
+                    <button mat-icon-button color="accent" title="Usuń" (click)="delete(element)" *isAdmin="true">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
@@ -61,6 +61,9 @@
         <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: columns;"></mat-row>
     </mat-table>
+    <app-table-message-container *ngIf="dataSource.emptyContent$ | async">
+        Nie znalezniono żadnych quizów spełniających zadane kryteria.
+    </app-table-message-container>
     <mat-paginator
         [pageSizeOptions]="[10, 20, 50, 100]"
         [pageSize]="20"

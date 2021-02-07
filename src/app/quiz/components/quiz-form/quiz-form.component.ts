@@ -54,7 +54,13 @@ export class QuizFormComponent implements OnInit, OnDestroy {
     this._categoryService.getAll<CategoryModel>({
       additionalPath: 'list'
     }).toPromise().then(
-      data => this.categories = data.list
+      data => {
+        this.categories = data.list;
+        this.categories.unshift({
+          id: null,
+          name: '---'
+        })
+      }
     ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
 
     this.form = this._formBuilder.group({
@@ -73,12 +79,16 @@ export class QuizFormComponent implements OnInit, OnDestroy {
       image: [null],
       questions: this._formBuilder.array([])
     });
+    this.form.controls['basic'].get('approachesCount').disable();
 
     if (this.isEdit) {
       this._store.dispatch(QuizActions.LOAD_QUIZ({ id: this._activatedRoute.snapshot.paramMap.get('quizId') }));
       this._subs.push(this._store.select(selectQuizEditData).pipe(filter(f => f != null)).subscribe(
         data => {
           this._setter(data);
+          if (data && !data.isInfinity) {
+            this.form.controls['basic'].get('approachesCount').enable();
+          }
           this.form.patchValue(QuizMapperSerivce.fromOutputToFormFormat(data));
           this._cdr.detectChanges();
           this.isLoaded = true;
@@ -155,6 +165,10 @@ export class QuizFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  public setApproachesCount(disabled: boolean) {
+    this.form.controls['basic'].get('approachesCount')[disabled ? 'disable' : 'enable']();
+  }
+
   public clearImage(name: string) {
     document.getElementById(name)['src'] = null;
     if (name.startsWith('q')) {
@@ -204,7 +218,6 @@ export class QuizFormComponent implements OnInit, OnDestroy {
     const message = 'Czy na pewno chcesz ' + (this.isEdit? 'edytować' : 'zapisać') + ' quiz?'
     this._matDialog.open<ConfirmEntryComponent, ConfirmModel<QuizModel, QuizModel>>(ConfirmEntryComponent, {
       width: '750px',
-      height: '230px',
       data: {
         actionType: ActionType.SAVE,
         action: action,

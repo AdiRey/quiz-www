@@ -1,5 +1,5 @@
 <nav class="navbar container-fluid">
-    <button mat-raised-button class="navbar__button" (click)="sidenav.toggle()">
+    <button mat-raised-button class="navbar__button" (click)="sidenav.toggle()" (click)="windowEvent()">
         <i class="fa fa-bars"></i>
     </button>
     <!-- <app-logo></app-logo> -->
@@ -8,8 +8,8 @@
       <i class="fa fa-chevron-down"></i>
     </button>
     <mat-menu #menu="matMenu" class="navbar__menu">
-      <button mat-menu-item class="navbar__menu--item">Moje konto</button>
-      <button mat-menu-item class="navbar__menu--item">Historia</button>
+      <!-- <button mat-menu-item class="navbar__menu--item">Moje konto</button> -->
+      <button mat-menu-item class="navbar__menu--item" [routerLink]="['/q/scores']">Historia</button>
       <button mat-menu-item class="navbar__menu--item" (click)="logout()">Wyloguj</button>
     </mat-menu>
 </nav>
@@ -31,12 +31,14 @@
           <mat-icon>{{ active.icon }}</mat-icon>
           <span>{{ active.content }}</span>
         </span>
-        <div *ngIf="header$ | async as header">
-          <button mat-raised-button color="accent" (click)="header.action()">
-            <mat-icon>{{ header.icon }}</mat-icon>
-            {{ header.text }}
-          </button>
-        </div>
+        <ng-template [isAdmin]="true">
+          <div *ngIf="header$ | async as header">
+            <button mat-raised-button color="accent" (click)="header.action()">
+              <mat-icon>{{ header.icon }}</mat-icon>
+              {{ header.text }}
+            </button>
+          </div>
+        </ng-template>
       </section>
       <router-outlet></router-outlet>
       <footer class="footer">

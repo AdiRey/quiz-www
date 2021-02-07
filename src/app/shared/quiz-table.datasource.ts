@@ -14,6 +14,7 @@ export class QuizDataSource<T = any> implements DataSource<T> {
 
     private _loading$ = new BehaviorSubject<boolean>(false);
     private _data$ = new BehaviorSubject<Array<T>>([]);
+    private _emptyContent$ = new BehaviorSubject<boolean>(true);
 
     // filters
     private _paginator: MatPaginator;
@@ -24,6 +25,8 @@ export class QuizDataSource<T = any> implements DataSource<T> {
 
 
     public loading$: Observable<boolean> = this._loading$.asObservable();
+
+    public emptyContent$: Observable<boolean> = this._emptyContent$.asObservable();
 
     get data() {
         return this._dataTable || [];
@@ -133,6 +136,7 @@ export class QuizDataSource<T = any> implements DataSource<T> {
                 });
                 this._dataTable = data.list;
                 this._data$.next(data.list);
+                this._emptyContent$.next(!!data.list.length ? false : true);
                 if (this._paginator) {
                     this._paginator.length = data.paginator.totalElements;
                 }

@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MessageContainerComponent } from '@shared/components/message-container/message-container.component';
 import { AppState } from '@shared/store/app-state';
-import { selectLoading, selectUrl } from '../../store';
+import { selectError, selectLoading, selectUrl } from '../../store';
 import * as AuthActions from '../../store/auth.actions';
 import { selectRootUser } from '@shared/root-store/root.selectors';
 import { Router } from '@angular/router';
@@ -18,8 +18,12 @@ import { Router } from '@angular/router';
 export class AuthPageComponent implements OnInit {
 
   private _subscription: Subscription;
+  private _interval = null;
+  private _error: boolean = false;
+
   public url: string;
   public loading$: Observable<boolean> = this._store.select(selectLoading);
+  public error$: Observable<boolean> = this._store.select(selectError);
   public click: boolean = false;
 
   public user$ = this._store.select(selectRootUser);
@@ -34,7 +38,9 @@ export class AuthPageComponent implements OnInit {
     this._store.dispatch(AuthActions.LOAD_CAS_URL());
     this._subscription = this._store.select(selectUrl).pipe(filter(f => f != null)).subscribe(
       url => this.url = url
-    )
+    );
+    this._subscription.add(this.loading$.pipe(filter(f => !f)).subscribe(() => this.click = false));
+    this._subscription.add(this.error$.subscribe(error => this._error = error))
   }
 
   openDialog(contentType: string): void {
@@ -50,13 +56,26 @@ export class AuthPageComponent implements OnInit {
 
   loginRoute(): void {
     this.click = true;
-    const interval = setInterval(() => {
+    this._loadUrl();
+    this._interval = setInterval(() => {
       if (this.url) {
-        clearInterval(interval);
-        window.location.href = this.url;
-        this.click = false;
+        this._route();
       }
     }, 100);
+  }
+
+  private _loadUrl() {
+    if (this._error) {
+      this._store.dispatch(AuthActions.LOAD_CAS_URL());
+    }
+  }
+
+  private _route() {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
+    this._interval = null;
+    window.location.href = this.url;
   }
 
   public goToDashboard() {

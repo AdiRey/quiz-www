@@ -1,6 +1,6 @@
 <app-loader [loading]="loading$ | async">
     <app-form-wrapper header="{{ data.isEdit? 'Edycja kategorii' : 'Dodaj kategorię' }}">
-        <form [formGroup]="form" class="form form-center">
+        <form [formGroup]="form" class="form form-center" (keydown)="keycode($event)">
             <section class="form__content-section">
                 <mat-form-field appearance="fill">
                     <mat-label>Nazwa</mat-label>

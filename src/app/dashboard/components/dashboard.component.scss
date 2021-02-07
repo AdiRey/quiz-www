@@ -39,13 +39,13 @@
     .loader {
       min-height: calc(100vh - 175px);
     }
+    .ngx-charts {
+      height: calc(100vh - 175px);
+    }
   }
   .chart {
     .loader {
       width: 100% !important;
     }
-  }
-  .ngx-charts {
-    height: calc(100vh - 175px);
   }
 }

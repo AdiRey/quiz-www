@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { IsAdminGuard } from '@shared/guards/is-admin.guard';
 import { HasTokenGuard } from '../shared/guards/has-token.guard';
 import { LayoutComponent } from './layout.component';
 
@@ -36,7 +37,7 @@ const routes: Routes = [
       {
         path: 'category',
         loadChildren: () => import('../category/category.module').then(m => m.CategoryModule),
-        canActivate: [HasTokenGuard]
+        canActivate: [HasTokenGuard, IsAdminGuard]
       },
       {
         path: 'rank',
@@ -47,6 +48,11 @@ const routes: Routes = [
         path: 'account',
         loadChildren: () => import('../account/account.module').then(m => m.AccountModule),
         canActivate: [HasTokenGuard]
+      },
+      {
+        path: 'admin-panel',
+        loadChildren: () => import('../admin-panel/admin-panel.module').then(m => m.AdminPanelModule),
+        canActivate: [HasTokenGuard, IsAdminGuard]
       }
     ]
   },

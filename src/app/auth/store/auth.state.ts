@@ -4,10 +4,12 @@ export interface AuthState {
     url: string;
     userData: UserModel;
     loading: boolean;
+    error: boolean;
 }
 
 export const initialAuthState: AuthState = {
     url: null,
     userData: null,
-    loading: false
+    loading: false,
+    error: false
 };

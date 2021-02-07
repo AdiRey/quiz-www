@@ -1,14 +1,14 @@
 <app-loader [loading]="loading$ | async">
     <section *ngIf="quizPreview$ | async as quizPreview" class="d-flex flex-wrap main-section">
         <section class="preview-box box-shadow d-flex flex-column col-6 align-items-center justify-content-around pb-3">
-            <h1>Tytuł: {{ quizPreview.title }}</h1>
-            <h2>Opis: {{ quizPreview.description }}</h2>
+            <h1 style="font-weight: 900; color: #232fbc; padding-top: 10px;">Tytuł: {{ quizPreview.title }}</h1>
+            <p><span style="font-weight: 700;">Opis:</span> {{ quizPreview.description }}</p>
             <h1>Kategoria: {{ quizPreview.category.name }}</h1>
             <h2>Czas trwania quizu: {{ quizPreview.time || 'Brak limitu' }}</h2>
             <h3>Data rozpoczęcia dostępności quizu: {{ quizPreview.startDate | date:'medium' || 'Brak' }}</h3>
             <h3>Data zakończenia dostępności quizu: {{ quizPreview.endingDate | date:'medium' || 'Brak' }}</h3>
             <p>Ilość prób: {{ quizPreview.approachesCount || "Nieskończona" }}</p>
-            <section *ngIf="quizPreview.approachesCount && (approachesCount$ | async)">
+            <section *ngIf="quizPreview.approachesCount">
                 <p>Pozostało Ci prób: {{ approachesCount$ | async }} </p> 
             </section>
         </section>

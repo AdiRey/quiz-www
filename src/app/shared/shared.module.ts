@@ -14,8 +14,10 @@ import { RedirectionEffect } from './store/redirection';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OnCreateDirective } from './directives/on-create.directive';
-import { ImageContainerComponent } from './components/image-container/image-container.component';
 import { CommonPipe } from './pipe/common.pipe';
+import { IsAdminDirective } from './directives/is-admin.directive';
+import { IsAdminGuard } from './guards/is-admin.guard';
+import { TableMessageContainerComponent } from './components/table-message-container/table-message-container.component';
 
 @NgModule({
   declarations: [
@@ -25,8 +27,9 @@ import { CommonPipe } from './pipe/common.pipe';
     FormWrapperComponent,
     LoaderComponent,
     OnCreateDirective,
-    ImageContainerComponent,
-    CommonPipe
+    IsAdminDirective,
+    CommonPipe,
+    TableMessageContainerComponent
   ],
   imports: [
     CommonModule,
@@ -36,14 +39,16 @@ import { CommonPipe } from './pipe/common.pipe';
     MatProgressSpinnerModule,
     EffectsModule.forFeature([NotificationEffect, RedirectionEffect])
   ],
-  providers: [HasTokenGuard],
+  providers: [HasTokenGuard, IsAdminGuard],
   exports: [
     LogoComponent,
     ConfirmEntryComponent,
     FormWrapperComponent,
     LoaderComponent,
     OnCreateDirective,
-    CommonPipe
+    IsAdminDirective,
+    CommonPipe,
+    TableMessageContainerComponent
   ],
   entryComponents: [ConfirmEntryComponent]
 })

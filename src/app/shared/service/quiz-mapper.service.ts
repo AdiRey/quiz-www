@@ -60,7 +60,6 @@ export class QuizMapperSerivce {
             })
             return question;
         });
-        console.log(form);
         return form as T;
     }
 }

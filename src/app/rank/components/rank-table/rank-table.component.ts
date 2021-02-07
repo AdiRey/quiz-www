@@ -58,27 +58,40 @@ export class RankTableComponent implements OnInit {
     this._categoryService.getAll<CategoryModel>({
       additionalPath: 'list'
     }).toPromise().then(
-      data => this.categories = data.list
+      data => {
+        this.categories = data.list;
+        this.categories.unshift({
+          id: null,
+          name: '---'
+        })
+      }
     ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
 
-    this._subs.push(this.form.get('categoryId').valueChanges.pipe(filter(f => f != null && f !== '')).subscribe(
+    this._subs.push(this.form.get('categoryId').valueChanges.subscribe(
       (data: number) => {
-        this.form.get('quizId').disable();
-        this.quizzes = [];
-        this.form.controls['quizId'].setValue(null);
-        this._quizService.getAll<QuizModel>({
-          additionalPath: 'list',
-          params: {
-            category: data,
-            title: null,
-            questions: null
-          }
-        }).toPromise().then(
-          quiz => {
-            this.form.get('quizId').enable();
-            this.quizzes = quiz.list;
-          }
-        ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
+        if (!data) {
+          this.quizzes = []
+          this.form.get('quizId').disable();
+        } else {
+          this.form.controls['quizId'].setValue(null);
+          this._quizService.getAll<QuizModel>({
+            additionalPath: 'list',
+            params: {
+              category: data,
+              title: null,
+              questions: null
+            }
+          }).toPromise().then(
+            quiz => {
+              this.form.get('quizId').enable();
+              this.quizzes = quiz.list;
+              this.quizzes.unshift({
+                id: null,
+                title: '---'
+              });
+            }
+          ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
+        }
       }
     ));
 

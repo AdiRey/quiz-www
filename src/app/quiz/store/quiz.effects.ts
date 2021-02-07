@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { switchMap, tap, catchError, mergeMap, map, withLatestFrom } from "rxjs/operators";
+import { switchMap, tap, catchError, mergeMap, map, withLatestFrom, delay } from "rxjs/operators";
 import * as QuizActions from '../store/quiz.actions';
 import * as ToastrActions from '@shared/store/toast/toastr.actions';
 import * as RedirectionActions from '@shared/store/redirection/redirection.actions'
@@ -13,6 +13,7 @@ import { AppState } from "@shared/store/app-state";
 import { selectQuizComplete, selectQuizEditData, selectQuizPreview } from "./quiz.selectors";
 import { UserQuizRestApiService } from "@shared/api-service/user-quiz.service";
 import { DialogHandlerService } from "@shared/service/dialog-handler.service";
+import { LocalStorage } from "@shared/service/local-storage.service";
 
 
 @Injectable({
@@ -168,12 +169,17 @@ export class QuizEffect {
     loadQuizComplete$ = createEffect(() =>
         this._actions$.pipe(
             ofType(QuizActions.LOAD_QUIZ_COMPLETE),
-            switchMap(res =>
-                this._quizService.save<QuizStartModel>({
+            switchMap(res => {
+                let quiz: QuizStartModel = LocalStorage.getQuiz(res.id);
+                return quiz ? of(
+                    QuizActions.LOAD_QUIZ_COMPLETE_SUCCESS(quiz),
+                    ToastrActions.SHOW_SUCCESS({ message: 'Rozpoczęto quiz' })
+                ) : this._quizService.save<QuizStartModel>({
                     additionalPath: `${res.id}/start`
                 }).pipe(
                     mergeMap(data => [
                         QuizActions.LOAD_QUIZ_COMPLETE_SUCCESS(data),
+                        QuizActions.SET_QUIZ_IN_LOCAL_STORAGE(data),
                         ToastrActions.SHOW_SUCCESS({ message: 'Rozpoczęto quiz' })
                     ]),
                     catchError(error => of(
@@ -181,7 +187,7 @@ export class QuizEffect {
                         QuizActions.DISCARD_QUIZ_COMPLETE_LOADING()
                     ))
                 )
-            )
+            })
         )
     );
 
@@ -196,7 +202,9 @@ export class QuizEffect {
             }).pipe(
                 mergeMap(() => [
                     QuizActions.SAVE_USER_QUIZ_COMPLETE_SUCCESS(),
-                    ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie ukończono quiz.' })
+                    ToastrActions.SHOW_SUCCESS({ message: 'Pomyślnie ukończono quiz.' }),
+                    QuizActions.CLOSE_ALL_DIALOGS(),
+                    RedirectionActions.REDIRECT({ url: '/q/quiz' })
                 ]),
                 catchError(error => of(
                     ToastrActions.SHOW_ERROR({ message: error }),
@@ -204,7 +212,13 @@ export class QuizEffect {
                 ))
             )
         )
-    )
+    ));
+
+    setQuizInLocalStorage = createEffect(() =>
+        this._actions$.pipe(
+            ofType(QuizActions.SET_QUIZ_IN_LOCAL_STORAGE),
+            tap(data => LocalStorage.setQuiz(data))
+        ), { dispatch: false }
     );
 
     closeLastDialog$ = createEffect(() =>

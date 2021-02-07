@@ -3,5 +3,5 @@ export const environment = {
 };
 
 export const config = {
-  apiUrl: 'https://quiz-app-twij.herokuapp.com/api/'
+  apiUrl: `${window.location.protocol}//${window.location.host}/api/`
 }

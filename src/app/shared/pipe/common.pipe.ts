@@ -23,7 +23,7 @@ export class CommonPipe implements PipeTransform {
             case 'replaceNull':
                 return value.replaceAll('null', '---');
             case 'percentage':
-                return Number.isNaN(value) ? 'Błędne dane' : Number.isInteger(value) ? value + ' %' : value.toFixed(2) + ' %';
+                return Number.isNaN(value) ? 'Błędne dane' : Number.isInteger(value) ? value * 100 + ' %' : value.toFixed(2) * 100 + ' %';
         }
     }
 

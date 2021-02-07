@@ -7,7 +7,7 @@ export interface QuizModel {
     startTime?: any;
     quizEndTime?: any;
     image?: string;
-    questions: Array<QuestionModel>;
+    questions?: Array<QuestionModel>;
 }
 
 export interface QuizApproachesModel {

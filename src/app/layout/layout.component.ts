@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, skip, tap } from 'rxjs/operators';
 import * as RootActions from '@shared/root-store/root.actions';
 import { selectRootUser } from '@shared/root-store/root.selectors';
+import { UserModel } from '@shared/model/root.model';
 
 @Component({
   selector: 'app-layout',
@@ -30,32 +31,44 @@ export class LayoutComponent implements OnInit {
     {
       route: '/q/dashboard',
       content: 'strona główna',
-      icon: 'video_label'
+      icon: 'video_label',
+      adminOnly: false
     },
     {
       route: '/q/news',
       content: 'nowe',
-      icon: 'fiber_new'
+      icon: 'fiber_new',
+      adminOnly: false
     },
     {
       route: '/q/quiz',
       content: 'quizy',
-      icon: 'school'
+      icon: 'school',
+      adminOnly: false
     },
     {
       route: '/q/scores',
       content: 'wyniki',
-      icon: 'score'
+      icon: 'score',
+      adminOnly: false
     },
     {
       route: '/q/rank',
       content: 'rankingi',
-      icon: 'moving'
+      icon: 'moving',
+      adminOnly: false
     },
     {
       route: '/q/category',
       content: 'kategorie',
-      icon: 'category'
+      icon: 'category',
+      adminOnly: true
+    },
+    {
+      route: '/q/admin-panel',
+      content: 'administracja',
+      icon: 'admin_panel_settings',
+      adminOnly: true
     }
   ];
 
@@ -75,12 +88,21 @@ export class LayoutComponent implements OnInit {
     ).subscribe();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const isAdmin = LocalStorage.getUserData().isAdmin;
+    if (!isAdmin) {
+      this.items = this.items.filter(item => !item.adminOnly);
+    }
+  }
 
   public logout() {
     this._store.dispatch(RootActions.CLEAR_USER());
     LocalStorage.clearAuth();
     this._router.navigate(['/auth']);
+  }
+
+  public windowEvent() {
+    window.dispatchEvent(new Event('resize'));
   }
 
 }

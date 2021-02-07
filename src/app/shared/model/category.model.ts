@@ -1,9 +1,9 @@
 export interface CategoryModel {
     readonly id: number;
-    lp: number;
+    lp?: number;
     name: string;
-    createDate: string;
-    quizesCount: number;
+    createDate?: string;
+    quizesCount?: number;
 }
 
 export interface CategoryEditModel {

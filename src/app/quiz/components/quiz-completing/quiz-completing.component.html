@@ -29,13 +29,13 @@
                     </section>
                     <section class="w-100 d-flex pt-5">
                         <section *ngIf="!first">
-                            <button mat-raised-button color="primary">Poprzednie</button>
+                            <button mat-raised-button color="primary" matStepperPrevious>Poprzednie</button>
                         </section>
                         <section *ngIf="last; else notLast" class="ml-auto">
                             <button mat-raised-button color="accent" (click)="save()">Zakończ quiz</button>
                         </section>
                         <ng-template #notLast>
-                            <button mat-raised-button color="accent" class="ml-auto">Następne</button>
+                            <button mat-raised-button color="accent" class="ml-auto" matStepperNext>Następne</button>
                         </ng-template>
                     </section>
                     <section class="timer">

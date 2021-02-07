@@ -30,16 +30,20 @@ export class Interceptor implements HttpInterceptor {
             timeout(10000),
             catchError((error: any) => {
                 let reason: string;
-                console.log(error);
                 switch (error.status) {
-                    case 401:
-                        reason = 'Brak aktywnej sesji';
+                    case 400:
+                        reason = 'Błędne zapytanie. Jeśli wszystko jest poprawnie wykonane, skontaktuj się z administratorem.';
                         break;
+                    case 401:
+                        reason = 'Brak aktywnej sesji.';
+                        break;
+                    case 403:
+                        reason = 'Nieautoryzowane połączenie. Zaloguj się ponownie, jeśli to nie pomoże, skontaktuj się z administratorem.';
                     case 404:
                         reason = 'Nie znaleziono danych. Odśwież stronę, jeśli to nie pomoże, skontaktuj się z administratorem.'
                         break;
                     default:
-                        reason = 'Błąd serwera'
+                        reason = 'Błąd serwera. Spróbuj później, jeśli to nie pomoże, skontaktuj się z administratorem.'
                 }
                 return throwError(reason);
             })

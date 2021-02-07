@@ -116,33 +116,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       days.push({
         id: 1,
         name: this._getDayPl(date.getDay()),
-        value: i // 0
+        value: Math.ceil(i * 69) % 20 // 0
       });
     }
     return days;
   }
-
-  bestCategories = [
-    {
-      name: 'Angular',
-      value: 1000
-    },
-    {
-      name: 'Spring',
-      value: 612
-    },
-    {
-      name: 'Ruby on Rails',
-      value: 107
-    },
-    {
-      name: 'Symphony',
-      value: 312
-    },
-    {
-      name: 'Inne',
-      value: 512
-    }
-  ]
 
 }

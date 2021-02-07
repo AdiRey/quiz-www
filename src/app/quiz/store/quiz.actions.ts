@@ -36,6 +36,8 @@ export const CLEAR_PREVIEW_DATA = createAction('[quiz] CLEAR_PREVIEW_DATA');
 export const CLOSE_ALL_DIALOGS = createAction('[quiz] CLOSE_ALL_DIALOGS');
 export const CLOSE_LAST_OPENED_DIALOG = createAction('[quiz] CLOSE_LAST_OPENED_DIALOG');
 
+export const SET_QUIZ_IN_LOCAL_STORAGE = createAction('[quiz] SET_QUIZ_IN_LOCAL_STORAGE', props<QuizStartModel>());
+
 export const DISCARD_LOADING = createAction('[quiz] DISCARD_LOADING');
 export const DISCARD_APPROACHES_LOADING = createAction('[quiz] DISCARD_APPROACHES_LOADING');
 export const DISCARD_QUIZ_COMPLETE_LOADING = createAction('[quiz] DISCARD_QUIZ_COMPLETE_LOADING');

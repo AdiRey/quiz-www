@@ -1,0 +1,63 @@
+<section class="table-wrapper">
+    <section class="form-in-table-wrapper">
+        <form [formGroup]="form">
+            <mat-form-field>
+                <mat-label>Imię</mat-label>
+                <input #firstName matInput formControlName="firstName" maxlength="50">
+                <mat-hint align="end">{{ firstName.value?.length || 0 }}/50</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="ml-3">
+                <mat-label>Nazwisko</mat-label>
+                <input #lastName matInput formControlName="lastName" maxlength="50">
+                <mat-hint align="end">{{ lastName.value?.length || 0 }}/50</mat-hint>
+            </mat-form-field>
+        </form>
+    </section>
+    <mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="lp">
+            <mat-header-cell *matHeaderCellDef class="col-1">Lp</mat-header-cell>
+            <td *matCellDef="let element" class="col-1">{{ element.lp }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Imię</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.firstName | common:'empty' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Nazwisko</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">{{ element.lastName | common:'empty' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="createDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Data logowania</mat-header-cell>
+            <td *matCellDef="let element" class="col-3">{{ element.createDate | common:'emptyDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="hasAccess">
+            <mat-header-cell *matHeaderCellDef class="col-2">Ma dostęp</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">
+                <mat-checkbox #access [checked]="element.hasAccess" color="primary" (change)="changeHasAccess(element, access.checked)"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isAdmin">
+            <mat-header-cell *matHeaderCellDef class="col-2">Administrator</mat-header-cell>
+            <td *matCellDef="let element" class="col-2">
+                <mat-checkbox #isAdmin [checked]="element.isAdmin" (change)="changeIsAdmin(element, isAdmin.checked)"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+    </mat-table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        [pageSize]="20"
+        showFirstLastButtons>
+    </mat-paginator>
+    <section class="mat-spinner-wrapper" *ngIf="dataSource.loading$ | async">
+        <mat-spinner diameter="100" color="accent"></mat-spinner>
+    </section>
+</section>

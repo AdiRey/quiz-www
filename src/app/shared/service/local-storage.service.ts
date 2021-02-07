@@ -1,3 +1,4 @@
+import { QuizStartModel } from "@shared/model/quiz.model";
 import { UserModel } from "../model/root.model";
 
 export class LocalStorage {
@@ -26,6 +27,16 @@ export class LocalStorage {
 
     public static getUserData(): UserModel {
         return this.getItem<UserModel>(this._userData);
+    }
+
+    public static setQuiz(quiz: QuizStartModel) {
+        if (quiz != null) {
+            localStorage.setItem(`quiz-${quiz.id}`, JSON.stringify(quiz));
+        }
+    }
+
+    public static getQuiz<T = QuizStartModel>(id: number | string) {
+        return JSON.parse(localStorage.getItem(`quiz-${id}`)) as T;
     }
 
     public static setItem(name: string, obj: Object): void {

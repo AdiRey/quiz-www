@@ -4,6 +4,7 @@ import { UserModel } from "@shared/model/root.model";
 
 export const LOAD_CAS_URL = createAction('[auth] LOAD_CAS_URL');
 export const LOAD_CAS_URL_SUCCESS = createAction('[auth] LOAD_CAS_URL_SUCCESS', props<UrlModel>());
+export const LOAD_CAS_URL_ERROR = createAction('[auth] LOAD_CAS_URL_ERROR');
 
 export const LOAD_TOKEN = createAction('[auth] LOAD_TOKEN', props<UUIDModel>());
 export const LOAD_TOKEN_SUCCESS = createAction('[auth] LOAD_TOKEN_SUCCESS', props<UserModel>());

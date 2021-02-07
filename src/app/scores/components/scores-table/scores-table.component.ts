@@ -37,7 +37,13 @@ export class ScoresTableComponent implements OnInit, AfterViewInit {
     this._categoryService.getAll<CategoryModel>({
       additionalPath: 'list'
     }).toPromise().then(
-      data => this.categories = data.list
+      data => {
+        this.categories = data.list;
+        this.categories.unshift({
+          id: null,
+          name: '---'
+        })
+      }
     ).catch(error => this._store.dispatch(ToastrActions.SHOW_ERROR({ message: error })));
 
     this.form = this._formBuilder.group({

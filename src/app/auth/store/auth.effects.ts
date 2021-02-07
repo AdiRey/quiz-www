@@ -31,7 +31,7 @@ export class AuthEffect {
                     map(data => AuthActions.LOAD_CAS_URL_SUCCESS(data)),
                     catchError(error => of(
                         ToastrActions.SHOW_ERROR({ message: error }),
-                        AuthActions.DISCARD_LOADING()
+                        AuthActions.LOAD_CAS_URL_ERROR()
                     ))
                 )
             )

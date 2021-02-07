@@ -32,7 +32,7 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      min-width: 200px;
+      // min-width: 200px;
       button {
         font-size: 1.2rem;
         border-radius: 20px;
@@ -106,15 +106,35 @@
   bottom: -100px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 600px) {
   .img-container__section--h1 {
     font-size: 50px;
   }
   .img-container__section--span {
     font-size: 30px;
   }
-  .img-container__footer,
-  .img-container__nav {
-    // display: none !important;
+  .footer-items {
+    padding: 0 0 10px 10px !important;
+    justify-content: flex-start !important;
+  }
+  .img-container__footer {
+    padding: 0;
+  }
+  // .img-container__footer,
+  // .img-container__nav {
+  //   display: none !important;
+  // }
+}
+
+@media (max-width: 380px) {
+  .faq {
+    display: none;
+  }
+  .img-container__section--h1 {
+    line-height: 52px;
+  }
+  .img-container__section--span {
+    // max-width: 240px;
+    text-align: center;
   }
 }

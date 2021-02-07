@@ -48,11 +48,11 @@
                   </mat-error>
                 </mat-form-field>
 
-                <mat-checkbox #approaches formControlName="isInfinity">Nielimitowana ilość podejść</mat-checkbox>
+                <mat-checkbox #approaches formControlName="isInfinity" (change)="setApproachesCount(approaches.checked)">Nielimitowana ilość podejść</mat-checkbox>
 
                 <mat-form-field appearance="outline">
                   <mat-label>Ilość podejść</mat-label>
-                  <input matInput formControlName="approachesCount" type="number" [readonly]="approaches.checked">
+                  <input matInput formControlName="approachesCount" type="number">
                   <mat-error *ngIf="basic['controls']['approachesCount'].invalid">
                     Minimalna wartość wynosi 0.
                   </mat-error>
@@ -124,7 +124,7 @@
             </form>
         </mat-step>
 
-        <mat-step [stepControl]="form.controls['questions']" errorMessage="Błędy w pytaniach" *ngIf="!isEdit">
+        <mat-step [stepControl]="form.controls['questions']" errorMessage="Błędy w pytaniach">
             <form [formGroup]="form" class="form">
                 <ng-template matStepLabel>Pytania</ng-template>
                 <div formArrayName="questions" class="w-100 d-flex flex-column">

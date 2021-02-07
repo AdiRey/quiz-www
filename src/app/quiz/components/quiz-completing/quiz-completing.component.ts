@@ -1,11 +1,13 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ConfirmEntryComponent } from '@shared/components/confirm-entry/confirm-entry.component';
 import { ActionType, ConfirmModel } from '@shared/model/components/confirm-entry.model';
 import { UserQuizModel, UserQuizWrappedModel } from '@shared/model/quiz.model';
+import { LocalStorage } from '@shared/service/local-storage.service';
 import { AppState } from '@shared/store/app-state';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -24,11 +26,14 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
 
   private _questions: Array<UserQuizModel> = [];
 
+  private _key: string = `startTimeQ-${this._activatedRoute.snapshot.paramMap.get('quizId')}`;
+
   public loading$: Observable<boolean> = this._store.select(selectQuizCompleteLoading);
 
   public quizComplete$ = this._store.select(selectQuizComplete).pipe(filter(f => f != null));
 
   public timer: string;
+
   private _interval;
 
 
@@ -40,7 +45,7 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store.dispatch(QuizActions.LOAD_QUIZ_COMPLETE({ id: this._activatedRoute.snapshot.paramMap.get('quizId') }));
-    this._store.select(selectQuizTime).subscribe(
+    this._store.select(selectQuizTime).pipe(filter(f => f != null)).subscribe(
       data => this._setTime(data)
     );
   }
@@ -49,11 +54,12 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
     clearInterval(this._interval);
   }
 
-  _setTime(time: number | null) {
+  private _setTime(time: number | null) {
+    LocalStorage.setItem(this._key, Date.now());
     if (time == null) {
       this.timer = 'Brak limitu';
     } else {
-      let now, distance, hours, minutes, seconds, desTime = new Date().getTime() + (time * 60000);
+      let now, distance, hours, minutes, seconds, desTime = LocalStorage.getItem<number>(this._key) + (time * 60000);
       this._interval = setInterval(() => {
         now = new Date().getTime();
         distance = desTime - now;
@@ -63,8 +69,9 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
         this.timer = hours + 'godz. ' + minutes + 'min. ' + seconds + 's';
         if (distance < 0) {
           clearInterval(this._interval);
+          this._store.dispatch(QuizActions.SAVE_USER_QUIZ_COMPLETE({ array: this._questions }))
         }
-      }, 1000);
+      }, 500);
     }
   }
 
@@ -81,7 +88,6 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
     } else {
       this._questions[this._questions.indexOf(question)].answersId.push(answerId);
     }
-    console.log('q', this._questions);
   }
 
   public setAnswerToQuestionRadio(questionId: number, answerId: number) {
@@ -92,7 +98,6 @@ export class QuizCompletingComponent implements OnInit, OnDestroy {
       });
     }
     this._questions.filter(question => question.questionId === questionId)[0].answersId = [answerId];
-    console.log('qr', this._questions);
   }
 
   public save() {

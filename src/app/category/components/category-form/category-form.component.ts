@@ -25,7 +25,8 @@ export class CategoryFormComponent implements OnInit {
     private readonly _dialogRef: MatDialogRef<CategoryFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CategoryEditModel,
     private readonly _store: Store<AppState>
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     DialogHandlerService.setDialogRef(this._dialogRef);
@@ -52,6 +53,16 @@ export class CategoryFormComponent implements OnInit {
         }) :
         CategoryActions.ADD_CATEGORY(this.form.value)
     )
+  }
+
+  public keycode(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.form.markAllAsTouched();
+      event.preventDefault();
+      if (this.form.valid) {
+        this.save();
+      }
+    }
   }
 
 }
