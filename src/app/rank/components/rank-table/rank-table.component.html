@@ -19,7 +19,7 @@
               </mat-form-field>
         </form>
     </section>
-    <mat-table [dataSource]="dataSource" matSort>
+    <mat-table [dataSource]="dataSource">
 
         <!-- ['lp', 'title', 'names', 'points', 'percentage'] -->
 
@@ -29,22 +29,22 @@
         </ng-container>
 
         <ng-container matColumnDef="title">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Tytuł</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef class="col-3">Tytuł</mat-header-cell>
             <td *matCellDef="let element" class="col-3">{{ element.quiz.title }}</td>
         </ng-container>
 
         <ng-container matColumnDef="names">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Imię i nazwisko</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef class="col-3">Imię i nazwisko</mat-header-cell>
             <td *matCellDef="let element" class="col-3">{{ (element.user.firstName + ' ' + element.user.lastName) | common:'replaceNull' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="result">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-2">Liczba punktów</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef class="col-2">Liczba punktów</mat-header-cell>
             <td *matCellDef="let element" class="col-2">{{ (element.points + ' / ' + element.quiz.points) | common:'replaceNull' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="percentage">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="col-3">Wynik w procentach</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef class="col-3">Wynik w procentach</mat-header-cell>
             <td *matCellDef="let element" class="col-3">{{ (element.points / element.quiz.points) | common:'percentage' }}</td>
         </ng-container>
 

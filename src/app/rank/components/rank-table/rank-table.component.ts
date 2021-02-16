@@ -1,18 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
-import { CategoryModel, CategoryEditModel } from '@shared/model/category.model';
-import { ConfirmModel } from '@shared/model/components/confirm-entry.model';
-import { IdModel } from '@shared/model/components/id.model';
+import { CategoryModel } from '@shared/model/category.model';
 import { QuizDataSource } from '@shared/quiz-table.datasource';
-import { HeaderService } from '@shared/service/header.service';
 import { AppState } from '@shared/store/app-state';
-import { filter, tap } from 'rxjs/operators';
-import { selectLoading } from 'src/app/auth/store';
-import { CategoryFormComponent } from 'src/app/category/components/category-form/category-form.component';
 import * as ToastrActions from '@shared/store/toast/toastr.actions';
 import { UserRestApiService } from '@shared/api-service/user.service';
 import { CategoryRestApiService } from '@shared/api-service/category.service';
@@ -36,7 +28,6 @@ export class RankTableComponent implements OnInit {
   private _subs: Array<Subscription> = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) matSort: MatSort;
   form: FormGroup;
 
   public dataSource = new QuizDataSource<CategoryModel>(this._userService);
@@ -101,6 +92,5 @@ export class RankTableComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.form = this.form;
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sorter = this.matSort;
   }
 }

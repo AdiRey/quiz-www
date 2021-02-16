@@ -45,11 +45,6 @@ const routes: Routes = [
         canActivate: [HasTokenGuard]
       },
       {
-        path: 'account',
-        loadChildren: () => import('../account/account.module').then(m => m.AccountModule),
-        canActivate: [HasTokenGuard]
-      },
-      {
         path: 'admin-panel',
         loadChildren: () => import('../admin-panel/admin-panel.module').then(m => m.AdminPanelModule),
         canActivate: [HasTokenGuard, IsAdminGuard]

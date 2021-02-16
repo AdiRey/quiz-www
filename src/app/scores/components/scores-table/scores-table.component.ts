@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
 import { CategoryRestApiService } from '@shared/api-service/category.service';
 import { UserRestApiService } from '@shared/api-service/user.service';
@@ -19,7 +18,6 @@ import * as ToastrActions from '@shared/store/toast/toastr.actions';
 export class ScoresTableComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) matSort: MatSort;
 
   public columns: Array<string> = ['lp', 'title', 'createDate', 'result', 'percentage'];
   public categories: Array<CategoryModel>;
@@ -54,7 +52,6 @@ export class ScoresTableComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataSource.form = this.form;
-    this.dataSource.sorter = this.matSort;
     this.dataSource.paginator = this.paginator;
   }
 
